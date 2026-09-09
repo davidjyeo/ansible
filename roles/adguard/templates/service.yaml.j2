@@ -10,6 +10,8 @@ spec:
 
   loadBalancerIP: {{ adguard_loadbalancer_ip }}
 
+  externalTrafficPolicy: Local
+
   selector:
     app: adguardhome
 
@@ -17,7 +19,7 @@ spec:
     - name: host
       port: 80
       targetPort: 80
-      
+
     - name: web
       port: 3000
       targetPort: 3000
