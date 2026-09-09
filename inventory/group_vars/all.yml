@@ -43,3 +43,31 @@ media_directories:
   - /srv/media/tv
   - /srv/media/music
   - /srv/media/downloads
+  - /srv/media/downloads/incomplete
+
+qbittorrent_namespace: qbittorrent
+qbittorrent_image: lscr.io/linuxserver/qbittorrent:latest
+qbittorrent_loadBalancer_ip: 192.168.0.221
+qbittorrent_config_path: /var/lib/rancher/qbittorrent-config
+
+qbittorrent_container_ports:
+  - containerPort: 8080
+  - containerPort: 6881
+    protocol: TCP
+  - containerPort: 6881
+    protocol: UDP
+
+qbittorrent_service_ports:
+  - name: webui
+    port: 8080
+    targetPort: 8080
+
+  - name: torrent-tcp
+    port: 6881
+    targetPort: 6881
+    protocol: TCP
+
+  - name: torrent-udp
+    port: 6881
+    targetPort: 6881
+    protocol: UDP

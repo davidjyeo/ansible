@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      labels:
+        app: qbittorrent
+    spec:
+      containers:
+        - name: qbittorrent
+
+          image: {{ qbittorrent_image }}
+
+          ports:
+      {% for port in qbittorrent_container_ports %}
+            - containerPort: {{ port.containerPort }}
+      {% if port.protocol is defined %}
+              protocol: {{ port.protocol }}
+      {% endif %}
+      {% endfor %}
+
+          env:
+            - name: PUID
+              value: "{{ qbittorrent_puid | string }}"
+
+            - name: PGID
+              value: "{{ qbittorrent_pgid | string }}"
+
+            - name: TZ
+              value: "{{ qbittorrent_timezone }}"
+
+            - name: WEBUI_PORT
+              value: "{{ qbittorrent_webui_port | string }}"
+
+          volumeMounts:
+            - name: config
+              mountPath: /config
+
+            - name: downloads
+              mountPath: /downloads
+
+      volumes:
+        - name: config
+          hostPath:
+            path: /var/lib/rancher/storage/qbittorrent-config
+            type: DirectoryOrCreate
+
+        - name: downloads
+          hostPath:
+            path: /srv/media/downloads
+            type: DirectoryOrCreate
