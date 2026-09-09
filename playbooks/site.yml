@@ -4,7 +4,17 @@
   become: true
 
   roles:
-    - common
+    - role: common
+      tags:
+        - common
+
+    - role: k3s
+      tags:
+        - k3s
+
+    - role: metallb
+      tags:
+        - metallb
 
 # - name: Configure K3s
 #   hosts: k3s

@@ -1,0 +1,38 @@
+---
+- name: Install MetalLB
+  ansible.builtin.shell: |
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/main/config/manifests/metallb-native.yaml
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Wait for MetalLB controller
+  ansible.builtin.command:
+    cmd: kubectl -n metallb-system rollout status deployment/controller
+  register: metallb_controller
+  retries: 30
+  delay: 10
+  until: metallb_controller.rc == 0
+  changed_when: false
+
+- name: Create IPAddressPool manifest
+  ansible.builtin.template:
+    src: ipaddresspool.yaml.j2
+    dest: /tmp/metallb-ipaddresspool.yaml
+
+- name: Create L2Advertisement manifest
+  ansible.builtin.template:
+    src: l2advertisement.yaml.j2
+    dest: /tmp/metallb-l2advertisement.yaml
+
+- name: Apply IPAddressPool
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/metallb-ipaddresspool.yaml
+    kubeconfig: "{{ kubeconfig_path }}"
+
+- name: Apply L2Advertisement
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/metallb-l2advertisement.yaml
+    kubeconfig: "{{ kubeconfig_path }}"

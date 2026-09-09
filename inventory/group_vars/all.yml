@@ -1,24 +1,25 @@
 ---
----
 timezone: Europe/London
 
-storage_mounts:
-  - path: /srv/media
-    owner: linuxadmin
-    group: linuxadmin
-    mode: "0755"
+# wifi_enabled: true
+# wifi_interface: wlp2s0
+# wifi_ssid: jsd178v
+# wifi_password: jR1RiQPjfRh4
 
-  - path: /srv/downloads
-    owner: linuxadmin
-    group: linuxadmin
-    mode: "0755"
+k3s_write_kubeconfig_mode: "0644"
+k3s_disable:
+  - servicelb
 
-  - path: /srv/backups
-    owner: linuxadmin
-    group: linuxadmin
-    mode: "0755"
+k3s_node_labels:
+  - "role=k3s"
 
-wifi_enabled: true
-wifi_interface: wlp2s0
-wifi_ssid: jsd178v
-wifi_password: jR1RiQPjfRh4
+k3s_packages:
+  - open-iscsi
+  - nfs-common
+
+kubeconfig_path: /etc/rancher/k3s/k3s.yaml
+
+metallb_namespace: metallb-system
+
+metallb_address_pool:
+  - 192.168.0.220-192.168.0.250

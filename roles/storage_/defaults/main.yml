@@ -1,0 +1,14 @@
+---
+storage_vg: ""
+storage_lv: ""
+storage_device: ""
+storage_expected_uuid: ""
+storage_filesystem: ext4
+storage_mount_point: /srv
+storage_review_mount_point: /mnt/storage-review
+
+# Disabled by default because consuming all free VG space is a
+# significant storage change.
+storage_extend_logical_volume: false
+
+storage_directories: []

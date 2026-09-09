@@ -3,24 +3,24 @@
   community.general.timezone:
     name: "{{ timezone }}"
 
-- name: Create storage directories
-  ansible.builtin.file:
-    path: "{{ item.path }}"
-    state: directory
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
-    mode: "{{ item.mode }}"
-  loop: "{{ storage_mounts }}"
+# - name: Create storage directories
+#   ansible.builtin.file:
+#     path: "{{ item.path }}"
+#     state: directory
+#     owner: "{{ item.owner }}"
+#     group: "{{ item.group }}"
+#     mode: "{{ item.mode }}"
+#   loop: "{{ storage_mounts }}"
 
-- name: Configure WiFi using Netplan
-  template:
-    src: netplan-wifi.yaml.j2
-    dest: /etc/netplan/60-wifi.yaml
-    owner: root
-    group: root
-    mode: "0600"
-  when: wifi_enabled
-  notify: Apply Netplan
+# - name: Configure WiFi using Netplan
+#   template:
+#     src: netplan-wifi.yaml.j2
+#     dest: /etc/netplan/60-wifi.yaml
+#     owner: root
+#     group: root
+#     mode: "0600"
+#   when: wifi_enabled
+#   notify: Apply Netplan
 
 - name: Update apt cache
   apt:
@@ -51,39 +51,45 @@
       - python3-pip
       - rsync
       - tree
-    state: present
-
-- name: Install Python Kubernetes dependencies
-  apt:
-    name:
+      - smartmontools
+      - intel-media-va-driver
+      - vainfo
+      - nfs-common
+      - unattended-upgrades
+      - apt-listchanges
       - python3-kubernetes
     state: present
 
-- name: Install unattended upgrades
-  apt:
-    name:
-      - unattended-upgrades
-      - apt-listchanges
-    state: present
+# - name: Install Python Kubernetes dependencies
+#   apt:
+#     name:
+      
+#     state: present
 
-- name: Enable unattended upgrades
-  copy:
-    dest: /etc/apt/apt.conf.d/20auto-upgrades
-    owner: root
-    group: root
-    mode: "0644"
-    content: |
-      APT::Periodic::Update-Package-Lists "1";
-      APT::Periodic::Unattended-Upgrade "1";
+# - name: Install unattended upgrades
+#   apt:
+#     name:
 
-- name: Ensure unattended-upgrades service is enabled
-  service:
-    name: unattended-upgrades
-    enabled: true
-    state: started
+#     state: present
 
-- name: Ensure fail2ban is enabled
-  service:
-    name: fail2ban
-    enabled: true
-    state: started
+# - name: Enable unattended upgrades
+#   copy:
+#     dest: /etc/apt/apt.conf.d/20auto-upgrades
+#     owner: root
+#     group: root
+#     mode: "0644"
+#     content: |
+#       APT::Periodic::Update-Package-Lists "1";
+#       APT::Periodic::Unattended-Upgrade "1";
+
+# - name: Ensure unattended-upgrades service is enabled
+#   service:
+#     name: unattended-upgrades
+#     enabled: true
+#     state: started
+
+# - name: Ensure fail2ban is enabled
+#   service:
+#     name: fail2ban
+#     enabled: true
+#     state: started
