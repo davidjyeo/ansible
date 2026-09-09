@@ -1,7 +1,17 @@
 ---
 - name: Set timezone
   community.general.timezone:
-    name: Europe/London
+    name: "{{ timezone }}"
+
+- name: Configure WiFi using Netplan
+  template:
+    src: netplan-wifi.yaml.j2
+    dest: /etc/netplan/60-wifi.yaml
+    owner: root
+    group: root
+    mode: "0600"
+  when: wifi_enabled
+  notify: Apply Netplan
 
 - name: Update apt cache
   apt:

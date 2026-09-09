@@ -1,2 +1,7 @@
 ---
 timezone: Europe/London
+
+wifi_enabled: true
+wifi_interface: wlp2s0
+wifi_ssid: jsd178v
+wifi_password: jR1RiQPjfRh4

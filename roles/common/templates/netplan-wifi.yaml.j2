@@ -1,0 +1,15 @@
+network:
+  version: 2
+  wifis:
+    {{ wifi_interface }}:
+      access-points:
+        "{{ wifi_ssid }}":
+          password: "{{ wifi_password }}"
+      dhcp4: true
+      dhcp4-overrides:
+        use-dns: false
+      nameservers:
+        addresses:
+        - 1.1.1.1
+        - 8.8.8.8
+      optional: true

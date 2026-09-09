@@ -6,9 +6,9 @@
   roles:
     - common
 
-- name: Configure K3s
-  hosts: k3s
-  become: true
+# - name: Configure K3s
+#   hosts: k3s
+#   become: true
 
-  roles:
-    - k3s
+#   roles:
+#     - k3s
