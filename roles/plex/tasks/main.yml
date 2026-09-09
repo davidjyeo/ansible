@@ -1,0 +1,41 @@
+---
+- name: Create Plex configuration directory
+  ansible.builtin.file:
+    path: "{{ plex_config_path }}"
+    state: directory
+    owner: "1000"
+    group: "1000"
+    mode: "0755"
+
+- name: Create Plex namespace manifest
+  ansible.builtin.template:
+    src: plex-namespace.yaml.j2
+    dest: /tmp/plex-namespace.yaml
+
+- name: Create Plex deployment manifest
+  ansible.builtin.template:
+    src: plex-deployment.yaml.j2
+    dest: /tmp/plex-deployment.yaml
+
+- name: Create Plex service manifest
+  ansible.builtin.template:
+    src: plex-service.yaml.j2
+    dest: /tmp/plex-service.yaml
+
+- name: Deploy Plex namespace
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/plex-namespace.yaml
+    kubeconfig: "{{ kubeconfig_path }}"
+
+- name: Deploy Plex
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/plex-deployment.yaml
+    kubeconfig: "{{ kubeconfig_path }}"
+
+- name: Deploy Plex Service
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/plex-service.yaml
+    kubeconfig: "{{ kubeconfig_path }}"

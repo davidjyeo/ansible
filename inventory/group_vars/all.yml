@@ -28,3 +28,12 @@ adguard_namespace: adguard
 adguard_image: adguard/adguardhome:latest
 adguard_storage_path: /var/lib/rancher/adguardhome
 adguard_loadbalancer_ip: 192.168.0.240
+
+plex_namespace: plex
+plex_image: lscr.io/linuxserver/plex:latest
+plex_loadbalancer_ip: 192.168.0.241
+plex_config_path: /var/lib/rancher/plex
+plex_media_path: /srv/media
+plex_puid: "1000"
+plex_pgid: "1000"
+plex_tz: Europe/London

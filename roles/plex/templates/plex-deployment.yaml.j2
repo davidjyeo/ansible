@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: plex
+  namespace: {{ plex_namespace }}
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: plex
+
+  template:
+    metadata:
+      labels:
+        app: plex
+
+    spec:
+      containers:
+        - name: plex
+
+          image: {{ plex_image }}
+
+          env:
+            - name: PUID
+              value: "{{ plex_puid }}"
+
+            - name: PGID
+              value: "{{ plex_pgid }}"
+
+            - name: TZ
+              value: "{{ plex_tz }}"
+
+          ports:
+            - containerPort: 32400
+
+          volumeMounts:
+            - name: config
+              mountPath: /config
+
+            - name: media
+              mountPath: /media
+
+      volumes:
+        - name: config
+          hostPath:
+            path: {{ plex_config_path }}
+            type: DirectoryOrCreate
+
+        - name: media
+          hostPath:
+            path: {{ plex_media_path }}
+            type: Directory
