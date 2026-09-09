@@ -1,4 +1,70 @@
 ---
 - name: Set timezone
-  timezone:
-    name: '{{ timezone }}'
+  community.general.timezone:
+    name: Europe/London
+
+- name: Update apt cache
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Upgrade installed packages
+  apt:
+    upgrade: dist
+
+- name: Remove obsolete packages
+  apt:
+    autoremove: true
+
+- name: Install common packages
+  apt:
+    name:
+      - curl
+      - wget
+      - vim
+      - git
+      - unzip
+      - htop
+      - net-tools
+      - fail2ban
+      - dnsutils
+      - jq
+      - python3-pip
+      - rsync
+      - tree
+    state: present
+
+- name: Install Python Kubernetes dependencies
+  apt:
+    name:
+      - python3-kubernetes
+    state: present
+
+- name: Install unattended upgrades
+  apt:
+    name:
+      - unattended-upgrades
+      - apt-listchanges
+    state: present
+
+- name: Enable unattended upgrades
+  copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+
+- name: Ensure unattended-upgrades service is enabled
+  service:
+    name: unattended-upgrades
+    enabled: true
+    state: started
+
+- name: Ensure fail2ban is enabled
+  service:
+    name: fail2ban
+    enabled: true
+    state: started

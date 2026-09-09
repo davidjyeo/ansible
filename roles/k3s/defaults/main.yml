@@ -1,0 +1,11 @@
+---
+# Install the latest stable K3s version when no version is specified.
+k3s_version: ""
+
+# Permissions applied to /etc/rancher/k3s/k3s.yaml.
+k3s_write_kubeconfig_mode: "0644"
+
+# Disable the built-in ServiceLB because MetalLB will provide
+# LoadBalancer services.
+k3s_disable:
+  - servicelb
