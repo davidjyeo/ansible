@@ -1,0 +1,56 @@
+---
+- name: Render media namespace manifest
+  ansible.builtin.template:
+    src: namespace.yaml.j2
+    dest: /tmp/media-namespace.yaml
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Apply media namespace
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/media-namespace.yaml
+
+
+---
+- name: Create QBittorrent configuration directory
+  ansible.builtin.file:
+    path: "{{ QBittorrent_config_path }}"
+    state: directory
+    owner: "1000"
+    group: "1000"
+    mode: "0755"
+
+- name: Create QBittorrent namespace manifest
+  ansible.builtin.template:
+    src: qbittorrent-namespace.yaml.j2
+    dest: /tmp/qbittorrent-namespace.yaml
+
+- name: Create QBittorrent deployment manifest
+  ansible.builtin.template:
+    src: qbittorrent-deployment.yaml.j2
+    dest: /tmp/qbittorrent-deployment.yaml
+
+- name: Create QBittorrent service manifest
+  ansible.builtin.template:
+    src: qbittorrent-service.yaml.j2
+    dest: /tmp/qbittorrent-service.yaml
+
+- name: Deploy QBittorrent namespace
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/qbittorrent-namespace.yaml
+    kubeconfig: "{{ kubeconfig_path }}"
+
+- name: Deploy QBittorrent
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/qbittorrent-deployment.yaml
+    kubeconfig: "{{ kubeconfig_path }}"
+
+- name: Deploy QBittorrent Service
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/qbittorrent-service.yaml
+    kubeconfig: "{{ kubeconfig_path }}"

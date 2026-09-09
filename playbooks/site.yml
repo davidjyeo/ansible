@@ -23,6 +23,11 @@
     - role: plex
       tags:
         - plex
+
+    - role: qbittorrent
+      tags:
+        - qbittorrent
+
 # - name: Configure K3s
 #   hosts: k3s
 #   become: true
