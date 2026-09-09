@@ -49,6 +49,9 @@ qbittorrent_namespace: qbittorrent
 qbittorrent_image: lscr.io/linuxserver/qbittorrent:latest
 qbittorrent_loadBalancer_ip: 192.168.0.221
 qbittorrent_config_path: /var/lib/rancher/qbittorrent-config
+qbittorrent_download_path: /srv/media/downloads
+qbittorrent_puid: "1000"
+qbittorrent_pgid: "1000"
 
 qbittorrent_container_ports:
   - containerPort: 8080
