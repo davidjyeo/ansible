@@ -1,0 +1,14 @@
+---
+- name: Configure all servers
+  hosts: all
+  become: true
+
+  roles:
+    - common
+
+- name: Configure K3s
+  hosts: k3s
+  become: true
+
+  roles:
+    - k3s
