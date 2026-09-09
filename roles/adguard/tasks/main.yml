@@ -1,0 +1,45 @@
+---
+- name: Create AdGuard Home directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - "{{ adguard_storage_path }}"
+    - "{{ adguard_storage_path }}/work"
+    - "{{ adguard_storage_path }}/conf"
+
+- name: Create namespace manifest
+  ansible.builtin.template:
+    src: namespace.yaml.j2
+    dest: /tmp/adguard-namespace.yaml
+
+- name: Create deployment manifest
+  ansible.builtin.template:
+    src: deployment.yaml.j2
+    dest: /tmp/adguard-deployment.yaml
+
+- name: Create service manifest
+  ansible.builtin.template:
+    src: service.yaml.j2
+    dest: /tmp/adguard-service.yaml
+
+- name: Apply namespace
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/adguard-namespace.yaml
+    kubeconfig: "{{ kubeconfig_path }}"
+
+- name: Apply deployment
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/adguard-deployment.yaml
+    kubeconfig: "{{ kubeconfig_path }}"
+
+- name: Apply service
+  kubernetes.core.k8s:
+    state: present
+    src: /tmp/adguard-service.yaml
+    kubeconfig: "{{ kubeconfig_path }}"

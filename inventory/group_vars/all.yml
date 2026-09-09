@@ -23,3 +23,8 @@ metallb_namespace: metallb-system
 
 metallb_address_pool:
   - 192.168.0.220-192.168.0.250
+
+adguard_namespace: adguard
+adguard_image: adguard/adguardhome:latest
+adguard_storage_path: /var/lib/rancher/adguardhome
+adguard_loadbalancer_ip: 192.168.0.240

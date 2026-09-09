@@ -16,6 +16,9 @@
       tags:
         - metallb
 
+    - role: adguard
+      tags:
+        - adguard
 # - name: Configure K3s
 #   hosts: k3s
 #   become: true

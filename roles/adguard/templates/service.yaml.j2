@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: adguardhome
+  namespace: {{ adguard_namespace }}
+
+spec:
+  type: LoadBalancer
+
+  loadBalancerIP: {{ adguard_loadbalancer_ip }}
+
+  selector:
+    app: adguardhome
+
+  ports:
+    - name: host
+      port: 80
+      targetPort: 80
+      
+    - name: web
+      port: 3000
+      targetPort: 3000
+
+    - name: dns-tcp
+      port: 53
+      targetPort: 53
+      protocol: TCP
+
+    - name: dns-udp
+      port: 53
+      targetPort: 53
+      protocol: UDP

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: adguardhome
+  namespace: {{ adguard_namespace }}
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: adguardhome
+
+  template:
+    metadata:
+      labels:
+        app: adguardhome
+
+    spec:
+      containers:
+        - name: adguardhome
+          image: {{ adguard_image }}
+
+          ports:
+            - containerPort: 3000
+            - containerPort: 80
+
+          volumeMounts:
+            - name: work
+              mountPath: /opt/adguardhome/work
+
+            - name: conf
+              mountPath: /opt/adguardhome/conf
+
+      volumes:
+        - name: work
+          hostPath:
+            path: {{ adguard_storage_path }}/work
+            type: DirectoryOrCreate
+
+        - name: conf
+          hostPath:
+            path: {{ adguard_storage_path }}/conf
+            type: DirectoryOrCreate
