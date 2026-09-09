@@ -1,0 +1,188 @@
+---
+- name: Discover host storage configuration
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Display host information
+      ansible.builtin.debug:
+        msg:
+          - "Host: {{ inventory_hostname }}"
+          - "Operating system: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+          - "Architecture: {{ ansible_architecture }}"
+
+    - name: Query block devices, partitions, filesystems and mount points
+      ansible.builtin.command:
+        argv:
+          - lsblk
+          - --bytes
+          - --output
+          - NAME,KNAME,PATH,TYPE,SIZE,FSTYPE,FSVER,LABEL,UUID,MOUNTPOINTS,MODEL,SERIAL,ROTA,TRAN
+      register: storage_lsblk
+      changed_when: false
+
+    - name: Display block devices
+      ansible.builtin.debug:
+        var: storage_lsblk.stdout_lines
+
+    - name: Query block devices in JSON format
+      ansible.builtin.command:
+        argv:
+          - lsblk
+          - --json
+          - --bytes
+          - --output
+          - NAME,KNAME,PATH,TYPE,SIZE,FSTYPE,FSVER,LABEL,UUID,MOUNTPOINTS,MODEL,SERIAL,ROTA,TRAN
+      register: storage_lsblk_json
+      changed_when: false
+
+    - name: Query mounted filesystems
+      ansible.builtin.command:
+        argv:
+          - findmnt
+          - --real
+          - --output
+          - TARGET,SOURCE,FSTYPE,OPTIONS,USED,AVAIL,USE%
+      register: storage_findmnt
+      changed_when: false
+
+    - name: Display mounted filesystems
+      ansible.builtin.debug:
+        var: storage_findmnt.stdout_lines
+
+    - name: Query filesystem usage
+      ansible.builtin.command:
+        argv:
+          - df
+          - -hT
+      register: storage_df
+      changed_when: false
+
+    - name: Display filesystem usage
+      ansible.builtin.debug:
+        var: storage_df.stdout_lines
+
+    - name: Check whether LVM physical volume command is available
+      ansible.builtin.command:
+        argv:
+          - which
+          - pvs
+      register: storage_pvs_available
+      changed_when: false
+      failed_when: false
+
+    - name: Query LVM physical volumes
+      ansible.builtin.command:
+        argv:
+          - pvs
+          - --units
+          - g
+          - --options
+          - pv_name,vg_name,pv_size,pv_free
+      register: storage_pvs
+      changed_when: false
+      when: storage_pvs_available.rc == 0
+
+    - name: Display LVM physical volumes
+      ansible.builtin.debug:
+        var: storage_pvs.stdout_lines
+      when: storage_pvs_available.rc == 0
+
+    - name: Query LVM volume groups
+      ansible.builtin.command:
+        argv:
+          - vgs
+          - --units
+          - g
+          - --options
+          - vg_name,vg_size,vg_free,pv_count,lv_count
+      register: storage_vgs
+      changed_when: false
+      when: storage_pvs_available.rc == 0
+
+    - name: Display LVM volume groups
+      ansible.builtin.debug:
+        var: storage_vgs.stdout_lines
+      when: storage_pvs_available.rc == 0
+
+    - name: Query LVM logical volumes
+      ansible.builtin.command:
+        argv:
+          - lvs
+          - --units
+          - g
+          - --options
+          - lv_name,vg_name,lv_size,lv_path,lv_attr,pool_lv,data_percent,metadata_percent
+      register: storage_lvs
+      changed_when: false
+      when: storage_pvs_available.rc == 0
+
+    - name: Display LVM logical volumes
+      ansible.builtin.debug:
+        var: storage_lvs.stdout_lines
+      when: storage_pvs_available.rc == 0
+
+    - name: Read persistent mount configuration
+      ansible.builtin.command:
+        argv:
+          - cat
+          - /etc/fstab
+      register: storage_fstab
+      changed_when: false
+
+    - name: Display persistent mount configuration
+      ansible.builtin.debug:
+        var: storage_fstab.stdout_lines
+
+    - name: Query active swap devices
+      ansible.builtin.command:
+        argv:
+          - swapon
+          - --show
+          - --output
+          - NAME,TYPE,SIZE,USED,PRIO
+      register: storage_swap
+      changed_when: false
+      failed_when: false
+
+    - name: Display active swap devices
+      ansible.builtin.debug:
+        var: storage_swap.stdout_lines
+
+    - name: Query filesystem signatures
+      ansible.builtin.command:
+        argv:
+          - blkid
+      register: storage_blkid
+      changed_when: false
+      failed_when: false
+
+    - name: Display filesystem signatures
+      ansible.builtin.debug:
+        var: storage_blkid.stdout_lines
+
+    - name: Query K3s local-path storage directory
+      ansible.builtin.stat:
+        path: /var/lib/rancher/k3s/storage
+      register: k3s_storage_directory
+
+    - name: Display K3s local-path storage status
+      ansible.builtin.debug:
+        msg:
+          - "Directory exists: {{ k3s_storage_directory.stat.exists }}"
+          - "Directory path: /var/lib/rancher/k3s/storage"
+          - "Directory is mounted separately: {{ (ansible_mounts | selectattr('mount', 'equalto', '/var/lib/rancher/k3s/storage') | list | length) > 0 }}"
+
+    - name: Write JSON block-device report to the Ansible controller
+      ansible.builtin.copy:
+        content: "{{ storage_lsblk_json.stdout | from_json | to_nice_json }}"
+        dest: "/tmp/{{ inventory_hostname }}-storage-report.json"
+        mode: "0644"
+      delegate_to: localhost
+      become: false
+
+    - name: Display local report location
+      ansible.builtin.debug:
+        msg: "Storage report written to /tmp/{{ inventory_hostname }}-storage-report.json on the Ansible controller."

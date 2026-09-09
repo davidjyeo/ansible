@@ -1,5 +1,22 @@
 ---
+---
 timezone: Europe/London
+
+storage_mounts:
+  - path: /srv/media
+    owner: linuxadmin
+    group: linuxadmin
+    mode: "0755"
+
+  - path: /srv/downloads
+    owner: linuxadmin
+    group: linuxadmin
+    mode: "0755"
+
+  - path: /srv/backups
+    owner: linuxadmin
+    group: linuxadmin
+    mode: "0755"
 
 wifi_enabled: true
 wifi_interface: wlp2s0
