@@ -60,6 +60,15 @@
       - python3-kubernetes
     state: present
 
+- name: Create media directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: linuxadmin
+    group: linuxadmin
+    mode: "0755"
+  loop: "{{ media_directories }}"
+
 # - name: Install Python Kubernetes dependencies
 #   apt:
 #     name:
