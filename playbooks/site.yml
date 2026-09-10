@@ -7,6 +7,11 @@
   serial: 10%
   max_fail_percentage: 40
 
+  # vars:
+  #   # Keep role names as variables to make the play easier to refactor later
+  #   common_role_name: common
+  #   docker_role_name: docker
+
   roles:
     - role: common
       tags:
