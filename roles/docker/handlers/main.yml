@@ -3,3 +3,8 @@
   systemd:
     name: docker
     state: restarted
+
+- name: Restart media stack
+  community.docker.docker_compose_v2:
+    project_src: /srv/docker/media-stack
+    state: present
