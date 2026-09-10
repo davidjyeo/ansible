@@ -1,0 +1,145 @@
+---
+- name: System baseline configuration
+  hosts: all
+  become: true
+  gather_facts: true
+
+  vars:
+    # Safe defaults (can be overridden via inventory/group_vars/host_vars or extra-vars)
+    timezone: "{{ timezone | default('UTC') }}"
+    packages:
+      - unzip
+      - net-tools
+      - fail2ban
+      - dnsutils
+      - python3-pip
+      - rsync
+      - tree
+      - smartmontools
+      - i965-va-driver
+      - vainfo
+      - intel-gpu-tools
+      - nfs-common
+    directories: "{{ directories | default([]) }}"
+    # preferred owner as in original playbook; if user does not exist we fall back to root (see tasks)
+    directory_owner: "{{ directory_owner | default('linuxadmin') }}"
+    directory_group: "{{ directory_group | default(directory_owner) }}"
+    directory_mode: "{{ directory_mode | default('0755') }}"
+    apt_cache_valid_time: 3600
+    sysctl_settings: "{{ sysctl_settings | default([]) }}"
+
+  handlers:
+    - name: Reload sysctl
+      ansible.builtin.command:
+        cmd: /sbin/sysctl --system
+      become: true
+      # Running sysctl --system is idempotent; handler will run only when notified.
+
+  tasks:
+    - name: Check target user exists (to avoid directory owner issues)
+      ansible.builtin.command:
+        cmd: "id -u {{ directory_owner }}"
+      register: owner_check
+      failed_when: false
+      changed_when: false
+      tags:
+        - directories
+        - precheck
+
+    - name: Set actual directory owner (fallback to root if user missing)
+      ansible.builtin.set_fact:
+        actual_directory_owner: "{{ directory_owner if owner_check.rc == 0 else 'root' }}"
+        actual_directory_group: "{{ directory_group if owner_check.rc == 0 else 'root' }}"
+      tags:
+        - directories
+        - precheck
+
+    - name: Warn about fallback to root for directory ownership
+      ansible.builtin.debug:
+        msg: "User '{{ directory_owner }}' not found on target; falling back to 'root' as directory owner."
+      when: owner_check.rc != 0
+      tags:
+        - directories
+        - precheck
+
+    - name: Ensure timezone is configured
+      community.general.timezone:
+        name: "{{ timezone }}"
+      tags:
+        - timezone
+
+    - name: APT maintenance and package tasks
+      block:
+        - name: Update apt cache
+          ansible.builtin.apt:
+            update_cache: true
+            cache_valid_time: "{{ apt_cache_valid_time }}"
+          tags:
+            - apt
+            - update
+
+        - name: Upgrade installed packages (dist-upgrade)
+          ansible.builtin.apt:
+            upgrade: dist
+          tags:
+            - apt
+            - upgrade
+
+        - name: Remove obsolete packages (autoremove)
+          ansible.builtin.apt:
+            autoremove: true
+          tags:
+            - apt
+            - autoremove
+
+        - name: Install common packages
+          ansible.builtin.apt:
+            name: "{{ packages }}"
+            state: present
+            # avoid interactive prompts in automation
+            force: no
+          tags:
+            - apt
+            - packages
+      rescue:
+        - name: Fail if APT maintenance failed
+          ansible.builtin.fail:
+            msg: "APT maintenance (update/upgrade/install) failed on {{ inventory_hostname }}. Check apt locks and network connectivity."
+      always:
+        - name: Ensure dpkg database is not locked (informative)
+          ansible.builtin.command:
+            cmd: "lsof /var/lib/dpkg/lock || true"
+          register: dpkg_lock_check
+          changed_when: false
+          failed_when: false
+          tags:
+            - apt
+
+    - name: Create directories with correct ownership and permissions
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ actual_directory_owner | default('root') }}"
+        group: "{{ actual_directory_group | default('root') }}"
+        mode: "{{ directory_mode }}"
+      loop: "{{ directories }}"
+      loop_control:
+        label: "{{ item }}"
+      when: directories | length > 0
+      tags:
+        - directories
+
+    - name: Apply sysctl settings (collect changes and reload once)
+      ansible.posix.sysctl:
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        state: present
+        reload: false    # defer reload to handler to avoid multiple reloads
+      loop: "{{ sysctl_settings }}"
+      loop_control:
+        label: "{{ item.name | default(item.key | default('unknown')) }}"
+      notify:
+        - Reload sysctl
+      when: sysctl_settings | length > 0
+      tags:
+        - sysctl
