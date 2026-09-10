@@ -9,6 +9,8 @@ directories:
   - /srv/appdata/sonarr
   - /srv/appdata/radarr
   - /srv/appdata/prowlarr
+  - /srv/docker
+  - /srv/docker/media-stack
   - /srv/media/movies
   - /srv/media/tv
   - /srv/media/music
@@ -38,6 +40,11 @@ docker_packages:
   - containerd.io
   - docker-buildx-plugin
   - docker-compose-plugin
+
+docker_compose_dir: /srv/docker/media-stack
+
+docker_compose_files:
+  - docker-compose.yml
 
 # wifi_enabled: true
 # wifi_interface: wlp2s0
