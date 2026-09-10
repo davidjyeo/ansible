@@ -69,6 +69,14 @@
     reload: true
   loop: "{{ sysctl_settings }}"
 
+# - name: Create Docker stack directory
+#   file:
+#     path: "{{ docker_compose_dir }}"
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: "0755"
+
 # - name: Install Python Kubernetes dependencies
 #   apt:
 #     name:
