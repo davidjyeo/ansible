@@ -1,7 +1,11 @@
 ---
 - name: Configure all servers
   hosts: all
+  gather_facts: true
   become: true
+  become_method: sudo
+  serial: 10%
+  max_fail_percentage: 40
 
   roles:
     - role: common
