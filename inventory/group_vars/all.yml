@@ -17,6 +17,7 @@ directories:
   - /srv/media/downloads
   - /srv/media/downloads/incomplete
   - /srv/media/downloads/complete
+  - /srv/transcode
 
 sysctl_settings:
   - name: vm.swappiness
