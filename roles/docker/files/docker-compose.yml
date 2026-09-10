@@ -72,23 +72,29 @@ services:
     networks:
       media_net:
         ipv4_address: 172.18.0.53
-  # prowlarr:
-  #   image: lscr.io/linuxserver/prowlarr:latest
-  #   container_name: prowlarr
-  #   environment:
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: Europe/London
-  #   volumes:
-  #     - /srv/media/appdata/prowlarr/conf:/config
-  #   ports:
-  #     - 9696:9696
-  #   dns:
-  #     - 172.18.0.53
-  #   restart: unless-stopped
-  #   networks:
-  #     - media_net
 
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+
+    volumes:
+      - /srv/appdata/prowlarr/conf:/config
+
+    ports:
+      - 9696:9696
+
+    dns:
+      - 172.18.0.53
+
+    restart: unless-stopped
+
+    networks:
+      - media_net
   # qbittorrent:
   #   image: lscr.io/linuxserver/qbittorrent:latest
   #   container_name: qbittorrent
