@@ -44,25 +44,31 @@ services:
     volumes:
       - /srv/appdata/adguard/work:/opt/adguardhome/work
       - /srv/appdata/adguard/conf:/opt/adguardhome/conf
+
     ports:
       - "53:53/tcp"
       - "53:53/udp"
       - "80:80/tcp"
       - "3000:3000/tcp"
+
     environment:
       TZ: Europe/London
       PUID: 1000
       PGID: 1000
+
     security_opt:
       - no-new-privileges:true
+
     cap_add:
       - NET_ADMIN
+
     healthcheck:
-      test: [ "CMD", "wget", "-qO-", "http://127.0.0.1:3000" ]
+      test: [ "CMD", "wget", "-qO-", "http://127.0.0.1:3000/" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
+
     networks:
       media_net:
         ipv4_address: 172.18.0.53

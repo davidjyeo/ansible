@@ -1,61 +1,80 @@
 ---
+- name: Create systemd-resolved override directory
+  ansible.builtin.file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Disable systemd-resolved DNS stub listener
+  ansible.builtin.copy:
+    dest: /etc/systemd/resolved.conf.d/adguardhome.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Resolve]
+      DNSStubListener=no
+  notify: Restart systemd-resolved
+
+- name: Apply systemd-resolved configuration
+  ansible.builtin.meta: flush_handlers
+
 - name: Install Docker prerequisites
-  apt:
+  ansible.builtin.apt:
     name:
-      - ca-certificates
-      - curl
-      - gnupg
       - ca-certificates
       - curl
       - gnupg
     state: present
     update_cache: true
+    cache_valid_time: 3600
 
-- name: Create Docker keyring directory
-  file:
+- name: Create Docker APT keyring directory
+  ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
     owner: root
     group: root
     mode: "0755"
 
-- name: Download Docker GPG key
-  get_url:
+- name: Download Docker repository signing key
+  ansible.builtin.get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
     dest: /etc/apt/keyrings/docker.asc
+    owner: root
+    group: root
     mode: "0644"
+    force: false
 
-- name: Add Docker repository
-  apt_repository:
-    repo: >
-      deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc]
+- name: Add Docker APT repository
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch={{ docker_apt_architecture }}
+      signed-by=/etc/apt/keyrings/docker.asc]
       https://download.docker.com/linux/ubuntu
-      {{ ansible_facts['distribution_release'] }}
-      stable
-    #filename: docker
+      {{ ansible_facts["distribution_release"] }} stable
+    filename: docker
     state: present
+    update_cache: true
 
 - name: Install Docker packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ docker_packages }}"
     state: present
     update_cache: true
 
-- name: Enable Docker service
-  systemd:
-    name: docker
-    enabled: true
-    state: started
-
-- name: Add users to docker group
-  user:
-    name: "{{ item }}"
-    groups: docker
-    append: true
-  loop: "{{ docker_users }}"
+- name: Create Docker daemon configuration directory
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
 
 - name: Configure Docker daemon
-  copy:
+  ansible.builtin.copy:
     dest: /etc/docker/daemon.json
     owner: root
     group: root
@@ -70,28 +89,43 @@
       }
   notify: Restart Docker
 
-- name: Verify Docker installation
-  command: docker --version
-  register: docker_version
-  changed_when: false
+- name: Enable and start Docker service
+  ansible.builtin.systemd_service:
+    name: docker
+    enabled: true
+    state: started
 
-- name: Display Docker version
-  debug:
-    var: docker_version.stdout
+- name: Add users to Docker group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups:
+      - docker
+    append: true
+  loop: "{{ docker_users }}"
 
-- name: Copy Docker Compose File
+- name: Create Docker Compose project directory
+  ansible.builtin.file:
+    path: "{{ docker_compose_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Copy Docker Compose file
   ansible.builtin.copy:
     src: docker-compose.yml
-    dest: "/srv/docker/media-stack/docker-compose.yml"
+    dest: "{{ docker_compose_dir }}/docker-compose.yml"
     owner: root
     group: root
     mode: "0644"
     backup: true
-  # notify: Restart media stack
+
+- name: Flush handlers before validating the stack
+  ansible.builtin.meta: flush_handlers
 
 - name: Check Docker Compose file
   ansible.builtin.stat:
-    path: /srv/docker/media-stack/docker-compose.yml
+    path: "{{ docker_compose_dir }}/docker-compose.yml"
   register: docker_compose_file
 
 - name: Assert Docker Compose file was copied
@@ -103,9 +137,41 @@
       - docker_compose_file.stat.gr_name == "root"
       - docker_compose_file.stat.mode == "0644"
     fail_msg: >-
-      docker-compose.yml is missing or has incorrect permissions
-      at /srv/docker/media-stack/docker-compose.yml
+      docker-compose.yml is missing or has incorrect ownership or
+      permissions at {{ docker_compose_dir }}/docker-compose.yml.
     success_msg: >-
       docker-compose.yml is present with the expected ownership
-      and permissions
-  notify: Restart media stack
+      and permissions.
+
+- name: Validate Docker Compose configuration
+  ansible.builtin.command:
+    cmd: docker compose config --quiet
+    chdir: "{{ docker_compose_dir }}"
+  changed_when: false
+
+- name: Deploy Docker Compose media stack
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_compose_dir }}"
+    files:
+      - docker-compose.yml
+    state: present
+    pull: missing
+  register: docker_compose_deployment
+
+- name: Verify Docker installation
+  ansible.builtin.command:
+    cmd: docker --version
+  register: docker_version
+  changed_when: false
+
+- name: Verify Docker Compose installation
+  ansible.builtin.command:
+    cmd: docker compose version
+  register: docker_compose_version
+  changed_when: false
+
+- name: Display Docker versions
+  ansible.builtin.debug:
+    msg:
+      - "{{ docker_version.stdout }}"
+      - "{{ docker_compose_version.stdout }}"

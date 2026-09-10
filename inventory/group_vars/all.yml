@@ -46,6 +46,10 @@ docker_compose_dir: /srv/docker/media-stack
 docker_compose_files:
   - docker-compose.yml
 
+docker_apt_architecture: >-
+  {{ 'arm64' if ansible_facts['architecture'] in ['aarch64', 'arm64']
+  else 'amd64' }}
+
 # wifi_enabled: true
 # wifi_interface: wlp2s0
 # wifi_ssid: jsd178v
