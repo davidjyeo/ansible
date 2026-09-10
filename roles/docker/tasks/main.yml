@@ -5,12 +5,6 @@
       - ca-certificates
       - curl
       - gnupg
-    state: present
-    update_cache: true
-
-- name: Install Docker prerequisites
-  apt:
-    name:
       - ca-certificates
       - curl
       - gnupg
@@ -93,7 +87,7 @@
     group: root
     mode: "0644"
     backup: true
-  notify: Restart media stack
+  # notify: Restart media stack
 
 - name: Check Docker Compose file
   ansible.builtin.stat:
@@ -114,3 +108,4 @@
     success_msg: >-
       docker-compose.yml is present with the expected ownership
       and permissions
+  notify: Restart media stack
