@@ -95,28 +95,34 @@ services:
 
     networks:
       - media_net
-  # qbittorrent:
-  #   image: lscr.io/linuxserver/qbittorrent:latest
-  #   container_name: qbittorrent
-  #   environment:
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: Europe/London
-  #     WEBUI_PORT: 8080
-  #     TORRENTING_PORT: 45321
-  #   volumes:
-  #     - /srv/media/appdata/qbittorrent/conf:/config
-  #     - /srv/media/downloads:/downloads
-  #   ports:
-  #     - 8080:8080
-  #     - 6881:6881
-  #     - 6881:6881/udp
-  #   dns:
-  #     - 172.18.0.53
-  #   restart: unless-stopped
-  #   networks:
-  #     - media_net
 
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+      WEBUI_PORT: 8080
+      TORRENTING_PORT: 45321
+
+    volumes:
+      - /srv/appdata/qbittorrent/conf:/config
+      - /srv/media/downloads:/downloads
+
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+
+    dns:
+      - 172.18.0.53
+
+    restart: unless-stopped
+
+    networks:
+      - media_net
   # sonarr:
   #   image: lscr.io/linuxserver/sonarr:latest
   #   container_name: sonarr
