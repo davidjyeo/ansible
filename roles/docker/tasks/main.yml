@@ -76,11 +76,6 @@
       }
   notify: Restart Docker
 
-- name: Restart Docker
-  systemd:
-    name: docker
-    state: restarted
-
 - name: Verify Docker installation
   command: docker --version
   register: docker_version
