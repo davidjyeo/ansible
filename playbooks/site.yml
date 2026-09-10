@@ -8,25 +8,25 @@
       tags:
         - common
 
-    - role: k3s
-      tags:
-        - k3s
+    # - role: k3s
+    #   tags:
+    #     - k3s
 
-    - role: metallb
-      tags:
-        - metallb
+    # - role: metallb
+    #   tags:
+    #     - metallb
 
-    - role: adguard
-      tags:
-        - adguard
+    # - role: adguard
+    #   tags:
+    #     - adguard
 
-    - role: plex
-      tags:
-        - plex
+    # - role: plex
+    #   tags:
+    #     - plex
 
-    - role: qbittorrent
-      tags:
-        - qbittorrent
+    # - role: qbittorrent
+    #   tags:
+    #     - qbittorrent
 
 # - name: Configure K3s
 #   hosts: k3s

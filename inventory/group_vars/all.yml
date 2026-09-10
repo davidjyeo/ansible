@@ -1,76 +1,114 @@
 ---
 timezone: Europe/London
 
-# wifi_enabled: true
-# wifi_interface: wlp2s0
-# wifi_ssid: jsd178v
-# wifi_password: jR1RiQPjfRh4
-
-k3s_write_kubeconfig_mode: "0644"
-k3s_disable:
-  - servicelb
-
-k3s_node_labels:
-  - "role=k3s"
-
-k3s_packages:
-  - open-iscsi
-  - nfs-common
-
-kubeconfig_path: /etc/rancher/k3s/k3s.yaml
-
-metallb_namespace: metallb-system
-
-metallb_address_pool:
-  - 192.168.0.220-192.168.0.250
-
-adguard_namespace: adguard
-adguard_image: adguard/adguardhome:latest
-adguard_storage_path: /var/lib/rancher/adguardhome
-adguard_loadbalancer_ip: 192.168.0.240
-
-plex_namespace: plex
-plex_image: lscr.io/linuxserver/plex:latest
-plex_loadbalancer_ip: 192.168.0.241
-plex_config_path: /var/lib/rancher/plex
-plex_media_path: /srv/media
-plex_puid: "1000"
-plex_pgid: "1000"
-plex_tz: Europe/London
-
-media_directories:
+directories:
+  - /srv/appdata
+  - /srv/appdata/adguard
+  - /srv/appdata/plex
+  - /srv/appdata/qbittorrent
+  - /srv/appdata/sonarr
+  - /srv/appdata/radarr
+  - /srv/appdata/prowlarr
   - /srv/media/movies
   - /srv/media/tv
   - /srv/media/music
   - /srv/media/downloads
   - /srv/media/downloads/incomplete
+  - /srv/media/downloads/complete
 
-qbittorrent_namespace: qbittorrent
-qbittorrent_image: lscr.io/linuxserver/qbittorrent:latest
-qbittorrent_loadBalancer_ip: 192.168.0.221
-qbittorrent_config_path: /var/lib/rancher/qbittorrent-config
-qbittorrent_download_path: /srv/media/downloads
-qbittorrent_puid: "1000"
-qbittorrent_pgid: "1000"
+sysctl_settings:
+  - name: vm.swappiness
+    value: "10"
 
-qbittorrent_container_ports:
-  - containerPort: 8080
-  - containerPort: 6881
-    protocol: TCP
-  - containerPort: 6881
-    protocol: UDP
+  - name: vm.vfs_cache_pressure
+    value: "50"
 
-qbittorrent_service_ports:
-  - name: webui
-    port: 8080
-    targetPort: 8080
+  - name: fs.inotify.max_user_watches
+    value: "1048576"
 
-  - name: torrent-tcp
-    port: 6881
-    targetPort: 6881
-    protocol: TCP
+  - name: fs.inotify.max_user_instances
+    value: "2048"
 
-  - name: torrent-udp
-    port: 6881
-    targetPort: 6881
-    protocol: UDP
+docker_users:
+  - linuxadmin
+
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin
+
+# wifi_enabled: true
+# wifi_interface: wlp2s0
+# wifi_ssid: jsd178v
+# wifi_password: jR1RiQPjfRh4
+
+# k3s_write_kubeconfig_mode: "0644"
+# k3s_disable:
+#   - servicelb
+
+# k3s_node_labels:
+#   - "role=k3s"
+
+# k3s_packages:
+#   - open-iscsi
+#   - nfs-common
+
+# kubeconfig_path: /etc/rancher/k3s/k3s.yaml
+
+# metallb_namespace: metallb-system
+
+# metallb_address_pool:
+#   - 192.168.0.220-192.168.0.250
+
+# adguard_namespace: adguard
+# adguard_image: adguard/adguardhome:latest
+# adguard_storage_path: /var/lib/rancher/adguardhome
+# adguard_loadbalancer_ip: 192.168.0.240
+
+# plex_namespace: plex
+# plex_image: lscr.io/linuxserver/plex:latest
+# plex_loadbalancer_ip: 192.168.0.241
+# plex_config_path: /var/lib/rancher/plex
+# plex_media_path: /srv/media
+# plex_puid: "1000"
+# plex_pgid: "1000"
+# plex_tz: Europe/London
+
+# media_directories:
+#   - /srv/media/movies
+#   - /srv/media/tv
+#   - /srv/media/music
+#   - /srv/media/downloads
+#   - /srv/media/downloads/incomplete
+
+# qbittorrent_namespace: qbittorrent
+# qbittorrent_image: lscr.io/linuxserver/qbittorrent:latest
+# qbittorrent_loadBalancer_ip: 192.168.0.221
+# qbittorrent_config_path: /var/lib/rancher/qbittorrent-config
+# qbittorrent_download_path: /srv/media/downloads
+# qbittorrent_puid: "1000"
+# qbittorrent_pgid: "1000"
+
+# qbittorrent_container_ports:
+#   - containerPort: 8080
+#   - containerPort: 6881
+#     protocol: TCP
+#   - containerPort: 6881
+#     protocol: UDP
+
+# qbittorrent_service_ports:
+#   - name: webui
+#     port: 8080
+#     targetPort: 8080
+
+#   - name: torrent-tcp
+#     port: 6881
+#     targetPort: 6881
+#     protocol: TCP
+
+#   - name: torrent-udp
+#     port: 6881
+#     targetPort: 6881
+#     protocol: UDP
