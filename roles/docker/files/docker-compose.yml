@@ -41,6 +41,7 @@ services:
     image: adguard/adguardhome:latest
     container_name: adguardhome
     restart: unless-stopped
+
     volumes:
       - /srv/appdata/adguard/work:/opt/adguardhome/work
       - /srv/appdata/adguard/conf:/opt/adguardhome/conf
@@ -140,8 +141,10 @@ services:
 
     ports:
       - 8989:8989
+
     dns:
       - 172.18.0.53
+
     restart: unless-stopped
     networks:
       - media_net
@@ -195,6 +198,7 @@ services:
 
     networks:
       - media_net
+
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
