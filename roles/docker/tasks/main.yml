@@ -95,3 +95,11 @@
     mode: "0644"
     backup: true
   #notify: Restart media stack
+
+- name: Assert Docker Compose file was copied
+  ansible.builtin.assert:
+    that:
+      - docker_compose_file.stat.exists
+      - docker_compose_file.stat.isreg
+    fail_msg: "docker-compose.yml was not copied to /srv/docker/media-stack"
+    success_msg: "docker-compose.yml is present on the Docker host"
