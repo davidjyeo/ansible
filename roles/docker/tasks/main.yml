@@ -88,18 +88,29 @@
 - name: Copy Docker Compose File
   ansible.builtin.copy:
     src: docker-compose.yml
-    #dest: "{{ docker_compose_dir }}/docker-compose.yml"
     dest: "/srv/docker/media-stack/docker-compose.yml"
     owner: root
     group: root
     mode: "0644"
     backup: true
-  #notify: Restart media stack
+  notify: Restart media stack
+
+- name: Check Docker Compose file
+  ansible.builtin.stat:
+    path: /srv/docker/media-stack/docker-compose.yml
+  register: docker_compose_file
 
 - name: Assert Docker Compose file was copied
   ansible.builtin.assert:
     that:
       - docker_compose_file.stat.exists
       - docker_compose_file.stat.isreg
-    fail_msg: "docker-compose.yml was not copied to /srv/docker/media-stack"
-    success_msg: "docker-compose.yml is present on the Docker host"
+      - docker_compose_file.stat.pw_name == "root"
+      - docker_compose_file.stat.gr_name == "root"
+      - docker_compose_file.stat.mode == "0644"
+    fail_msg: >-
+      docker-compose.yml is missing or has incorrect permissions
+      at /srv/docker/media-stack/docker-compose.yml
+    success_msg: >-
+      docker-compose.yml is present with the expected ownership
+      and permissions

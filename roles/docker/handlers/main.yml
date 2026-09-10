@@ -5,6 +5,7 @@
     state: restarted
 
 - name: Restart media stack
-  community.docker.docker_compose_v2:
-    project_src: /srv/docker/media-stack
-    state: present
+  ansible.builtin.command:
+    cmd: docker compose up -d
+    chdir: /srv/docker/media-stack
+  changed_when: true
