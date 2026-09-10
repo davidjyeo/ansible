@@ -84,3 +84,13 @@
 - name: Display Docker version
   debug:
     var: docker_version.stdout
+
+- name: Copy Docker Compose File
+    ansible.builtin.copy:
+    src: docker-compose.yml
+    dest: "/srv/docker/media-stack/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  #notify: Restart media stack
