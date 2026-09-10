@@ -6,14 +6,16 @@
       - curl
       - gnupg
     state: present
-    update_cache: true- name: Install Docker prerequisites
-  # apt:
-  #   name:
-  #     - ca-certificates
-  #     - curl
-  #     - gnupg
-  #   state: present
-  #   update_cache: true
+    update_cache: true
+
+- name: Install Docker prerequisites
+  apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+    state: present
+    update_cache: true
 
 - name: Create Docker keyring directory
   file:
