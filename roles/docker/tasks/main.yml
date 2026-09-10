@@ -156,7 +156,7 @@
       - docker-compose.yml
     state: present
     pull: missing
-  register: docker_compose_deployment
+  # register: docker_compose_deployment
 
 - name: Verify Docker installation
   ansible.builtin.command:
