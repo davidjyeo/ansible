@@ -42,22 +42,22 @@
     mode: "0755"
   loop: "{{ directories }}"
 
-- name: Create Grafana data directory
-  ansible.builtin.file:
-    path: /srv/appdata/grafana/data
-    state: directory
-    owner: "{{ grafana_uid }}"
-    group: "{{ grafana_gid }}"
-    mode: "0755"
+# - name: Create Grafana data directory
+#   ansible.builtin.file:
+#     path: /srv/appdata/grafana/data
+#     state: directory
+#     owner: "{{ grafana_uid }}"
+#     group: "{{ grafana_gid }}"
+#     mode: "0755"
 
-- name: Create Node-RED data directory and correct existing permissions
-  ansible.builtin.file:
-    path: /srv/appdata/nodered
-    state: directory
-    owner: "{{ nodered_uid }}"
-    group: "{{ nodered_gid }}"
-    mode: "0750"
-    recurse: true
+# - name: Create Node-RED data directory and correct existing permissions
+#   ansible.builtin.file:
+#     path: /srv/appdata/nodered
+#     state: directory
+#     owner: "{{ nodered_uid }}"
+#     group: "{{ nodered_gid }}"
+#     mode: "0750"
+#     recurse: true
 
 - name: Configure sysctl settings
   ansible.posix.sysctl:
