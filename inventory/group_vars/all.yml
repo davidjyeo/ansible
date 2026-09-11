@@ -12,6 +12,7 @@ directories:
   - /srv/appdata/grafana
   - /srv/appdata/postgres
   - /srv/appdata/timescaledb
+  - /srv/appdata/nodered
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies
