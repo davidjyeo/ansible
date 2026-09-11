@@ -32,6 +32,27 @@ services:
       - timescaledb
         #:
         # condition: service_healthy
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered
+    restart: unless-stopped
+
+    ports:
+      - "1880:1880"
+
+    environment:
+      TZ: Europe/London
+
+    volumes:
+      - /srv/appdata/nodered:/data
+
+    dns:
+      - 172.18.0.53
+
+    networks:
+      - media_net
+
+    depends_on: timescaledb
 
   timescaledb:
     image: timescale/timescaledb:latest-pg17
@@ -70,6 +91,9 @@ services:
 
       ports:
         - 5432:5432
+
+      dns:
+        - 172.18.0.53
 
       networks:
         - media_net
