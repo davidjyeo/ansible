@@ -15,7 +15,6 @@ services:
       TZ: Europe/London
 
     volumes:
-      #- /srv/appdata/grafana/conf:/etc/grafana
       - /srv/appdata/grafana/data:/var/lib/grafana
 
     ports:
@@ -28,10 +27,11 @@ services:
       - media_net
 
     depends_on:
-      - postgres
+      # - postgres
       - timescaledb
         #:
         # condition: service_healthy
+
   nodered:
     image: nodered/node-red:latest
     container_name: nodered
@@ -55,7 +55,7 @@ services:
     depends_on: timescaledb
 
   timescaledb:
-    image: timescale/timescaledb:latest-pg17
+    image: timescale/timescaledb:latest-pg18-oss
     container_name: timescaledb
     restart: unless-stopped
 
@@ -67,6 +67,12 @@ services:
     ports:
       - "5432:5432"
 
+    dns:
+      - 172.18.0.53
+
+    networks:
+      - media_net
+
     volumes:
       - /srv/appdata/timescaledb:/var/lib/postgresql/data
 
@@ -76,27 +82,27 @@ services:
       timeout: 10s
       retries: 5
 
-    postgres:
-      image: postgres:latest
-      container_name: postgres
-      restart: unless-stopped
+  # postgres:
+  #   image: postgres:latest
+  #   container_name: postgres
+  #   restart: unless-stopped
 
-      environment:
-        POSTGRES_USER: trader
-        POSTGRES_PASSWORD: 1QAZ2wsx3edc
-        POSTGRES_DB: marketdata
+  #   environment:
+  #     POSTGRES_USER: trader
+  #     POSTGRES_PASSWORD: 1QAZ2wsx3edc
+  #     POSTGRES_DB: marketdata
 
-      volumes:
-        - /srv/appdata/postgres:/var/lib/postgresql
+  #   volumes:
+  #     - /srv/appdata/postgres:/var/lib/postgresql
 
-      ports:
-        - 5432:5432
+  #   ports:
+  #     - 5432:5432
 
-      dns:
-        - 172.18.0.53
+  #   dns:
+  #     - 172.18.0.53
 
-      networks:
-        - media_net
+  #   networks:
+  #     - media_net
 
   adguardhome:
     image: adguard/adguardhome:latest
