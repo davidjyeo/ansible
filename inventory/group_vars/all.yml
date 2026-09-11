@@ -10,6 +10,7 @@ directories:
   - /srv/appdata/radarr
   - /srv/appdata/prowlarr
   - /srv/appdata/grafana
+  - /srv/appdata/postgres
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies
@@ -19,6 +20,9 @@ directories:
   - /srv/media/downloads/incomplete
   - /srv/media/downloads/complete
   - /srv/transcode
+
+grafana_uid: "472"
+grafana_gid: "472"
 
 sysctl_settings:
   - name: vm.swappiness
