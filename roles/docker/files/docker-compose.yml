@@ -41,6 +41,13 @@ services:
       - "1880:1880"
 
     environment:
+      PG_HOST: timescaledb
+      PG_PORT: 5432
+      PG_DATABASE: marketdata
+      PG_USER: trader
+      PG_PASSWORD: 1QAZ2wsx3edc
+      PUID: 1000
+      PGID: 1000
       TZ: Europe/London
 
     volumes:
