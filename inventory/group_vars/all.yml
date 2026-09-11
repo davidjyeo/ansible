@@ -26,6 +26,9 @@ directories:
 grafana_uid: "472"
 grafana_gid: "472"
 
+nodered_uid: "1000"
+nodered_gid: "1000"
+
 sysctl_settings:
   - name: vm.swappiness
     value: "10"
