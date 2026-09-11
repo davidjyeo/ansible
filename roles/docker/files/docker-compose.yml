@@ -75,7 +75,9 @@ services:
       - media_net
 
     volumes:
-      - /srv/appdata/timescaledb:/var/lib/postgresql/data
+      - /srv/appdata/timescaledb:/var/lib/postgresql
+      # - /srv/appdata/postgres:/var/lib/postgresql
+
 
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U trader -d marketdata" ]
