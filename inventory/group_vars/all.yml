@@ -9,6 +9,7 @@ directories:
   - /srv/appdata/sonarr
   - /srv/appdata/radarr
   - /srv/appdata/prowlarr
+  - /srv/appdata/grafana
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies

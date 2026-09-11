@@ -1,41 +1,31 @@
 services:
 
-  # terraformmcp:
-  #   container_name: terraform-mcp-server
-  #   image: hashicorp/terraform-mcp-server
-  #   restart: unless-stopped
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
 
-  #   command:
-  #     - streamable-http
-  #     - --toolsets=registry #default
-  #     - --transport-host=0.0.0.0
-  #     - --transport-port=8080
-  #     - --mcp-endpoint=/mcp
+    environment:
+      # GF_SECURITY_ADMIN_USER: admin
+      # GF_SECURITY_ADMIN_PASSWORD: admin
+      # GF_USERS_ALLOW_SIGN_UP: "false"
+      # GF_USERS_AUTO_ASSIGN_ORG_ROLE: Admin
+      # GF_USERS_AUTO_ASSIGN_ORG: "true"
+      GF_PLUGINS_PREINSTALL: grafana-clock-panel #,grafana-piechart-panel,grafana-simple-json-datasource
+      TZ: Europe/London
 
-  #   environment:
-  #     TZ: Europe/London
-  #     #      MCP_ENDPOINT: /mcp
-  #     LOG_LEVEL: info
-  #     LOG_FORMAT: text
-  #     MCP_CORS_MODE: permissive
-  #     ENABLE_TF_OPERATIONS: "false"
-  #   #      TRANSPORT_HOST: 0.0.0.0
-  #   #      TRANSPORT_PORT: "8080"
+    volumes:
+      - /srv/appdata/grafana/conf:/etc/grafana
+      - /srv/appdata/grafana/data:/var/lib/grafana
 
-  #   ports:
-  #     - '8081:8080'
+    ports:
+      - 3000:3000
 
-  #   dns:
-  #     - 172.18.0.53
+    dns:
+      - 172.18.0.53
 
-  #   healthcheck:
-  #     test: [ "CMD", "/bin/terraform-mcp-server", "--help" ]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-
-  #   networks:
-  #     - media_net
+    networks:
+      - media_net
 
   adguardhome:
     image: adguard/adguardhome:latest
@@ -231,3 +221,39 @@ networks:
       config:
         - subnet: 172.18.0.0/24
     driver: bridge
+      # terraformmcp:
+      #   container_name: terraform-mcp-server
+      #   image: hashicorp/terraform-mcp-server
+      #   restart: unless-stopped
+
+      #   command:
+      #     - streamable-http
+      #     - --toolsets=registry #default
+      #     - --transport-host=0.0.0.0
+      #     - --transport-port=8080
+      #     - --mcp-endpoint=/mcp
+
+      #   environment:
+      #     TZ: Europe/London
+      #     #      MCP_ENDPOINT: /mcp
+      #     LOG_LEVEL: info
+      #     LOG_FORMAT: text
+      #     MCP_CORS_MODE: permissive
+      #     ENABLE_TF_OPERATIONS: "false"
+      #   #      TRANSPORT_HOST: 0.0.0.0
+      #   #      TRANSPORT_PORT: "8080"
+
+      #   ports:
+      #     - '8081:8080'
+
+      #   dns:
+      #     - 172.18.0.53
+
+      #   healthcheck:
+      #     test: [ "CMD", "/bin/terraform-mcp-server", "--help" ]
+      #     interval: 30s
+      #     timeout: 10s
+      #     retries: 3
+
+      #   networks:
+      #     - media_net
