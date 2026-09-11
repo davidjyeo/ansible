@@ -1,118 +1,96 @@
 services:
 
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    restart: unless-stopped
-
-    environment:
-      GF_SECURITY_ADMIN_USER: linuxadmin
-      GF_SECURITY_ADMIN_PASSWORD: 1QAZ2wsx3edc
-      # GF_USERS_ALLOW_SIGN_UP: "false"
-      # GF_USERS_AUTO_ASSIGN_ORG_ROLE: Admin
-      # GF_USERS_AUTO_ASSIGN_ORG: "true"
-      GF_PLUGINS_PREINSTALL: grafana-clock-panel,yesoreyeram-infinity-datasource #,grafana-piechart-panel,grafana-simple-json-datasource
-      TZ: Europe/London
-
-    volumes:
-      - /srv/appdata/grafana/data:/var/lib/grafana
-
-    ports:
-      - 3001:3000 # host:container
-
-    dns:
-      - 172.18.0.53
-
-    networks:
-      - media_net
-
-    depends_on:
-      # - postgres
-      - timescaledb
-        #:
-        # condition: service_healthy
-
-  nodered:
-    image: nodered/node-red:latest
-    container_name: nodered
-    restart: unless-stopped
-
-    ports:
-      - "1880:1880"
-
-    environment:
-      PG_HOST: timescaledb
-      PG_PORT: 5432
-      PG_DATABASE: marketdata
-      PG_USER: trader
-      PG_PASSWORD: 1QAZ2wsx3edc
-      PUID: 1000
-      PGID: 1000
-      TZ: Europe/London
-
-    volumes:
-      - /srv/appdata/nodered:/data
-
-    dns:
-      - 172.18.0.53
-
-    networks:
-      - media_net
-
-    depends_on:
-      - timescaledb
-
-  timescaledb:
-    image: timescale/timescaledb:latest-pg18-oss
-    container_name: timescaledb
-    restart: unless-stopped
-
-    environment:
-      POSTGRES_DB: marketdata
-      POSTGRES_USER: trader
-      POSTGRES_PASSWORD: 1QAZ2wsx3edc
-
-    ports:
-      - "5432:5432"
-
-    dns:
-      - 172.18.0.53
-
-    networks:
-      - media_net
-
-    volumes:
-      - /srv/appdata/timescaledb:/var/lib/postgresql
-      # - /srv/appdata/postgres:/var/lib/postgresql
-
-
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U trader -d marketdata" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  # postgres:
-  #   image: postgres:latest
-  #   container_name: postgres
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   container_name: grafana
   #   restart: unless-stopped
 
   #   environment:
-  #     POSTGRES_USER: trader
-  #     POSTGRES_PASSWORD: 1QAZ2wsx3edc
-  #     POSTGRES_DB: marketdata
+  #     GF_SECURITY_ADMIN_USER: linuxadmin
+  #     GF_SECURITY_ADMIN_PASSWORD: 1QAZ2wsx3edc
+  #     # GF_USERS_ALLOW_SIGN_UP: "false"
+  #     # GF_USERS_AUTO_ASSIGN_ORG_ROLE: Admin
+  #     # GF_USERS_AUTO_ASSIGN_ORG: "true"
+  #     GF_PLUGINS_PREINSTALL: grafana-clock-panel,yesoreyeram-infinity-datasource #,grafana-piechart-panel,grafana-simple-json-datasource
+  #     TZ: Europe/London
 
   #   volumes:
-  #     - /srv/appdata/postgres:/var/lib/postgresql
+  #     - /srv/appdata/grafana/data:/var/lib/grafana
 
   #   ports:
-  #     - 5432:5432
+  #     - 3001:3000 # host:container
 
   #   dns:
   #     - 172.18.0.53
 
   #   networks:
   #     - media_net
+
+  #   depends_on:
+  #     # - postgres
+  #     - timescaledb
+  #       #:
+  #       # condition: service_healthy
+
+  # nodered:
+  #   image: nodered/node-red:latest
+  #   container_name: nodered
+  #   restart: unless-stopped
+
+  #   ports:
+  #     - "1880:1880"
+
+  #   environment:
+  #     PG_HOST: timescaledb
+  #     PG_PORT: 5432
+  #     PG_DATABASE: marketdata
+  #     PG_USER: trader
+  #     PG_PASSWORD: 1QAZ2wsx3edc
+  #     PUID: 1000
+  #     PGID: 1000
+  #     TZ: Europe/London
+
+  #   volumes:
+  #     - /srv/appdata/nodered:/data
+
+  #   dns:
+  #     - 172.18.0.53
+
+  #   networks:
+  #     - media_net
+
+  #   depends_on:
+  #     - timescaledb
+
+  # timescaledb:
+  #   image: timescale/timescaledb:latest-pg18-oss
+  #   container_name: timescaledb
+  #   restart: unless-stopped
+
+  #   environment:
+  #     POSTGRES_DB: marketdata
+  #     POSTGRES_USER: trader
+  #     POSTGRES_PASSWORD: 1QAZ2wsx3edc
+
+  #   ports:
+  #     - "5432:5432"
+
+  #   dns:
+  #     - 172.18.0.53
+
+  #   networks:
+  #     - media_net
+
+  #   volumes:
+  #     - /srv/appdata/timescaledb:/var/lib/postgresql
+  #     # - /srv/appdata/postgres:/var/lib/postgresql
+
+
+  #   healthcheck:
+  #     test: [ "CMD-SHELL", "pg_isready -U trader -d marketdata" ]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
 
   adguardhome:
     image: adguard/adguardhome:latest
