@@ -213,6 +213,9 @@ services:
       TZ: Europe/London
       VERSION: docker
 
+    devices:
+      - /dev/dri:/dev/dri
+
     volumes:
       - /srv/appdata/plex/conf:/config
       - /srv/media/movies:/movies
