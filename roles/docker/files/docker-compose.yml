@@ -6,12 +6,12 @@ services:
     restart: unless-stopped
 
     environment:
-      # GF_SECURITY_ADMIN_USER: admin
-      # GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_SECURITY_ADMIN_USER: linuxadmin
+      GF_SECURITY_ADMIN_PASSWORD: 1QAZ2wsx3edc
       # GF_USERS_ALLOW_SIGN_UP: "false"
       # GF_USERS_AUTO_ASSIGN_ORG_ROLE: Admin
       # GF_USERS_AUTO_ASSIGN_ORG: "true"
-      GF_PLUGINS_PREINSTALL: grafana-clock-panel #,grafana-piechart-panel,grafana-simple-json-datasource
+      GF_PLUGINS_PREINSTALL: grafana-clock-panel,yesoreyeram-infinity-datasource #,grafana-piechart-panel,grafana-simple-json-datasource
       TZ: Europe/London
 
     volumes:
@@ -29,41 +29,49 @@ services:
 
     depends_on:
       - postgres
+      - timescaledb:
+          condition: service_healthy
 
-  # collector:
-  # build: ./collector
-
-  # restart: unless-stopped
-
-  # environment:
-  #   TWELVE_DATA_KEY: your_key
-  #   DB_HOST: postgres
-  #   DB_NAME: marketdata
-  #   DB_USER: trader
-  #   DB_PASS: ChangeMe
-
-  # depends_on:
-  #   - postgres
-
-  postgres:
-    image: postgres:latest
-    container_name: postgres
+  timescaledb:
+    image: timescale/timescaledb:latest-pg17
+    container_name: timescaledb
     restart: unless-stopped
 
     environment:
+      POSTGRES_DB: marketdata
       POSTGRES_USER: trader
       POSTGRES_PASSWORD: 1QAZ2wsx3edc
-      POSTGRES_DB: marketdata
-
-    volumes:
-      #- /srv/appdata/postgres/data:/var/lib/postgresql/data
-      - /srv/appdata/postgres:/var/lib/postgresql
 
     ports:
-      - 5432:5432
+      - "5432:5432"
 
-    networks:
-      - media_net
+    volumes:
+      - /srv/appdata/timescaledb:/var/lib/postgresql/data
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U trader -d marketdata" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+    postgres:
+      image: postgres:latest
+      container_name: postgres
+      restart: unless-stopped
+
+      environment:
+        POSTGRES_USER: trader
+        POSTGRES_PASSWORD: 1QAZ2wsx3edc
+        POSTGRES_DB: marketdata
+
+      volumes:
+        - /srv/appdata/postgres:/var/lib/postgresql
+
+      ports:
+        - 5432:5432
+
+      networks:
+        - media_net
 
   adguardhome:
     image: adguard/adguardhome:latest

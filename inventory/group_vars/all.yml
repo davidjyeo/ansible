@@ -11,6 +11,7 @@ directories:
   - /srv/appdata/prowlarr
   - /srv/appdata/grafana
   - /srv/appdata/postgres
+  - /srv/appdata/timescaledb
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies
