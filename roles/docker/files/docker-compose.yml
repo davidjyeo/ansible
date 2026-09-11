@@ -19,7 +19,7 @@ services:
       - /srv/appdata/grafana/data:/var/lib/grafana
 
     ports:
-      - 3001:3000
+      - 3001:3000 # host:container
 
     dns:
       - 172.18.0.53
