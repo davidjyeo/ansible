@@ -25,7 +25,7 @@ remove_directories:
   - /srv/appdata/postgres
   - /srv/appdata/timescaledb
   - /srv/appdata/nodered
-  # - /srv/appdata/netdata
+  - /srv/appdata/netdata
 
 # grafana_uid: "472"
 # grafana_gid: "472"
