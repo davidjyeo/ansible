@@ -10,6 +10,7 @@ directories:
   - /srv/appdata/radarr
   - /srv/appdata/lidarr
   - /srv/appdata/prowlarr
+  - /srv/appdata/byparr
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies
