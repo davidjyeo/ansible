@@ -93,37 +93,37 @@ services:
   #     retries: 5
 
   netdata:
-  image: netdata/netdata:stable
-  container_name: netdata
-  hostname: "{{ inventory_hostname | default('netdata') }}"
-  pid: host
-  network_mode: host
-  restart: unless-stopped
+    image: netdata/netdata:stable
+    container_name: netdata
+    hostname: netdata
+    pid: host
+    network_mode: host
+    restart: unless-stopped
 
-  cap_add:
-    - SYS_PTRACE
-    - SYS_ADMIN
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
 
-  security_opt:
-    - apparmor:unconfined
+    security_opt:
+      - apparmor:unconfined
 
-  volumes:
-    # Persistent Netdata application data
-    - /srv/appdata/netdata/config:/etc/netdata
-    - /srv/appdata/netdata/lib:/var/lib/netdata
-    - /srv/appdata/netdata/cache:/var/cache/netdata
+    volumes:
+      # Persistent Netdata application data
+      - /srv/appdata/netdata/config:/etc/netdata
+      - /srv/appdata/netdata/lib:/var/lib/netdata
+      - /srv/appdata/netdata/cache:/var/cache/netdata
 
-    # Host monitoring mounts
-    - /:/host/root:ro,rslave
-    - /etc/passwd:/host/etc/passwd:ro
-    - /etc/group:/host/etc/group:ro
-    - /etc/localtime:/etc/localtime:ro
-    - /proc:/host/proc:ro
-    - /sys:/host/sys:ro
-    - /etc/os-release:/host/etc/os-release:ro
-    - /var/log:/host/var/log:ro
-    - /var/run/docker.sock:/var/run/docker.sock:ro
-    - /run/dbus:/run/dbus:ro
+      # Host monitoring mounts
+      - /:/host/root:ro,rslave
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /var/log:/host/var/log:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /run/dbus:/run/dbus:ro
 
   adguardhome:
     image: adguard/adguardhome:latest
