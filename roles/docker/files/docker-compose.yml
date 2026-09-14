@@ -1,130 +1,5 @@
 services:
 
-  # grafana:
-  #   image: grafana/grafana:latest
-  #   container_name: grafana
-  #   restart: unless-stopped
-
-  #   environment:
-  #     GF_SECURITY_ADMIN_USER: linuxadmin
-  #     GF_SECURITY_ADMIN_PASSWORD: 1QAZ2wsx3edc
-  #     # GF_USERS_ALLOW_SIGN_UP: "false"
-  #     # GF_USERS_AUTO_ASSIGN_ORG_ROLE: Admin
-  #     # GF_USERS_AUTO_ASSIGN_ORG: "true"
-  #     GF_PLUGINS_PREINSTALL: grafana-clock-panel,yesoreyeram-infinity-datasource #,grafana-piechart-panel,grafana-simple-json-datasource
-  #     TZ: Europe/London
-
-  #   volumes:
-  #     - /srv/appdata/grafana/data:/var/lib/grafana
-
-  #   ports:
-  #     - 3001:3000 # host:container
-
-  #   dns:
-  #     - 172.18.0.53
-
-  #   networks:
-  #     - media_net
-
-  #   depends_on:
-  #     # - postgres
-  #     - timescaledb
-  #       #:
-  #       # condition: service_healthy
-
-  # nodered:
-  #   image: nodered/node-red:latest
-  #   container_name: nodered
-  #   restart: unless-stopped
-
-  #   ports:
-  #     - "1880:1880"
-
-  #   environment:
-  #     PG_HOST: timescaledb
-  #     PG_PORT: 5432
-  #     PG_DATABASE: marketdata
-  #     PG_USER: trader
-  #     PG_PASSWORD: 1QAZ2wsx3edc
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: Europe/London
-
-  #   volumes:
-  #     - /srv/appdata/nodered:/data
-
-  #   dns:
-  #     - 172.18.0.53
-
-  #   networks:
-  #     - media_net
-
-  #   depends_on:
-  #     - timescaledb
-
-  # timescaledb:
-  #   image: timescale/timescaledb:latest-pg18-oss
-  #   container_name: timescaledb
-  #   restart: unless-stopped
-
-  #   environment:
-  #     POSTGRES_DB: marketdata
-  #     POSTGRES_USER: trader
-  #     POSTGRES_PASSWORD: 1QAZ2wsx3edc
-
-  #   ports:
-  #     - "5432:5432"
-
-  #   dns:
-  #     - 172.18.0.53
-
-  #   networks:
-  #     - media_net
-
-  #   volumes:
-  #     - /srv/appdata/timescaledb:/var/lib/postgresql
-  #     # - /srv/appdata/postgres:/var/lib/postgresql
-
-
-  #   healthcheck:
-  #     test: [ "CMD-SHELL", "pg_isready -U trader -d marketdata" ]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 5
-
-  # netdata:
-  #   image: netdata/netdata:stable
-  #   container_name: netdata
-  #   hostname: netdata
-  #   pid: host
-  #   network_mode: host
-  #   restart: unless-stopped
-
-  #   cap_add:
-  #     - SYS_PTRACE
-  #     - SYS_ADMIN
-
-  #   security_opt:
-  #     - apparmor:unconfined
-
-  #   volumes:
-  #     # Persistent Netdata application data
-  #     - /srv/appdata/netdata/config:/etc/netdata
-  #     - /srv/appdata/netdata/lib:/var/lib/netdata
-  #     - /srv/appdata/netdata/cache:/var/cache/netdata
-
-  #     # Host monitoring mounts
-  #     - /:/host/root:ro,rslave
-  #     - /etc/passwd:/host/etc/passwd:ro
-  #     - /etc/group:/host/etc/group:ro
-  #     - /etc/localtime:/etc/localtime:ro
-  #     - /proc:/host/proc:ro
-  #     - /sys:/host/sys:ro
-  #     - /etc/os-release:/host/etc/os-release:ro
-  #     - /var/log:/host/var/log:ro
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #     - /run/dbus:/run/dbus:ro
-
   adguardhome:
     image: adguard/adguardhome:latest
     container_name: adguardhome
@@ -265,30 +140,30 @@ services:
     networks:
       - media_net
 
-  # lidarr:
-  #   image: lscr.io/linuxserver/lidarr:latest
-  #   container_name: lidarr
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
 
-  #   environment:
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: Europe/London
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
 
-  #   volumes:
-  #     - /srv/appdata/lidarr/conf:/config
-  #     - /srv/media/music:/music
-  #     - /srv/media/downloads:/downloads
+    volumes:
+      - /srv/appdata/lidarr/conf:/config
+      - /srv/media/music:/music
+      - /srv/media/downloads:/downloads
 
-  #   ports:
-  #     - 8686:8686
+    ports:
+      - 8686:8686
 
-  #   dns:
-  #     - 172.18.0.53
+    dns:
+      - 172.18.0.53
 
-  #   restart: unless-stopped
+    restart: unless-stopped
 
-  #   networks:
-  #     - media_net
+    networks:
+      - media_net
 
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -322,39 +197,165 @@ networks:
       config:
         - subnet: 172.18.0.0/24
     driver: bridge
-      # terraformmcp:
-      #   container_name: terraform-mcp-server
-      #   image: hashicorp/terraform-mcp-server
-      #   restart: unless-stopped
+    #////
 
-      #   command:
-      #     - streamable-http
-      #     - --toolsets=registry #default
-      #     - --transport-host=0.0.0.0
-      #     - --transport-port=8080
-      #     - --mcp-endpoint=/mcp
+    # terraformmcp:
+    #   container_name: terraform-mcp-server
+    #   image: hashicorp/terraform-mcp-server
+    #   restart: unless-stopped
 
-      #   environment:
-      #     TZ: Europe/London
-      #     #      MCP_ENDPOINT: /mcp
-      #     LOG_LEVEL: info
-      #     LOG_FORMAT: text
-      #     MCP_CORS_MODE: permissive
-      #     ENABLE_TF_OPERATIONS: "false"
-      #   #      TRANSPORT_HOST: 0.0.0.0
-      #   #      TRANSPORT_PORT: "8080"
+    #   command:
+    #     - streamable-http
+    #     - --toolsets=registry #default
+    #     - --transport-host=0.0.0.0
+    #     - --transport-port=8080
+    #     - --mcp-endpoint=/mcp
 
-      #   ports:
-      #     - '8081:8080'
+    #   environment:
+    #     TZ: Europe/London
+    #     #      MCP_ENDPOINT: /mcp
+    #     LOG_LEVEL: info
+    #     LOG_FORMAT: text
+    #     MCP_CORS_MODE: permissive
+    #     ENABLE_TF_OPERATIONS: "false"
+    #   #      TRANSPORT_HOST: 0.0.0.0
+    #   #      TRANSPORT_PORT: "8080"
 
-      #   dns:
-      #     - 172.18.0.53
+    #   ports:
+    #     - '8081:8080'
 
-      #   healthcheck:
-      #     test: [ "CMD", "/bin/terraform-mcp-server", "--help" ]
-      #     interval: 30s
-      #     timeout: 10s
-      #     retries: 3
+    #   dns:
+    #     - 172.18.0.53
 
-      #   networks:
-      #     - media_net
+    #   healthcheck:
+    #     test: [ "CMD", "/bin/terraform-mcp-server", "--help" ]
+    #     interval: 30s
+    #     timeout: 10s
+    #     retries: 3
+
+    #   networks:
+    #     - media_net
+    # grafana:
+    #   image: grafana/grafana:latest
+    #   container_name: grafana
+    #   restart: unless-stopped
+
+    #   environment:
+    #     GF_SECURITY_ADMIN_USER: linuxadmin
+    #     GF_SECURITY_ADMIN_PASSWORD: 1QAZ2wsx3edc
+    #     # GF_USERS_ALLOW_SIGN_UP: "false"
+    #     # GF_USERS_AUTO_ASSIGN_ORG_ROLE: Admin
+    #     # GF_USERS_AUTO_ASSIGN_ORG: "true"
+    #     GF_PLUGINS_PREINSTALL: grafana-clock-panel,yesoreyeram-infinity-datasource #,grafana-piechart-panel,grafana-simple-json-datasource
+    #     TZ: Europe/London
+
+    #   volumes:
+    #     - /srv/appdata/grafana/data:/var/lib/grafana
+
+    #   ports:
+    #     - 3001:3000 # host:container
+
+    #   dns:
+    #     - 172.18.0.53
+
+    #   networks:
+    #     - media_net
+
+    #   depends_on:
+    #     # - postgres
+    #     - timescaledb
+    #       #:
+    #       # condition: service_healthy
+
+    # nodered:
+    #   image: nodered/node-red:latest
+    #   container_name: nodered
+    #   restart: unless-stopped
+
+    #   ports:
+    #     - "1880:1880"
+
+    #   environment:
+    #     PG_HOST: timescaledb
+    #     PG_PORT: 5432
+    #     PG_DATABASE: marketdata
+    #     PG_USER: trader
+    #     PG_PASSWORD: 1QAZ2wsx3edc
+    #     PUID: 1000
+    #     PGID: 1000
+    #     TZ: Europe/London
+
+    #   volumes:
+    #     - /srv/appdata/nodered:/data
+
+    #   dns:
+    #     - 172.18.0.53
+
+    #   networks:
+    #     - media_net
+
+    #   depends_on:
+    #     - timescaledb
+
+    # timescaledb:
+    #   image: timescale/timescaledb:latest-pg18-oss
+    #   container_name: timescaledb
+    #   restart: unless-stopped
+
+    #   environment:
+    #     POSTGRES_DB: marketdata
+    #     POSTGRES_USER: trader
+    #     POSTGRES_PASSWORD: 1QAZ2wsx3edc
+
+    #   ports:
+    #     - "5432:5432"
+
+    #   dns:
+    #     - 172.18.0.53
+
+    #   networks:
+    #     - media_net
+
+    #   volumes:
+    #     - /srv/appdata/timescaledb:/var/lib/postgresql
+    #     # - /srv/appdata/postgres:/var/lib/postgresql
+
+
+    #   healthcheck:
+    #     test: [ "CMD-SHELL", "pg_isready -U trader -d marketdata" ]
+    #     interval: 30s
+    #     timeout: 10s
+    #     retries: 5
+
+    # netdata:
+    #   image: netdata/netdata:stable
+    #   container_name: netdata
+    #   hostname: netdata
+    #   pid: host
+    #   network_mode: host
+    #   restart: unless-stopped
+
+    #   cap_add:
+    #     - SYS_PTRACE
+    #     - SYS_ADMIN
+
+    #   security_opt:
+    #     - apparmor:unconfined
+
+    #   volumes:
+    #     # Persistent Netdata application data
+    #     - /srv/appdata/netdata/config:/etc/netdata
+    #     - /srv/appdata/netdata/lib:/var/lib/netdata
+    #     - /srv/appdata/netdata/cache:/var/cache/netdata
+
+    #     # Host monitoring mounts
+    #     - /:/host/root:ro,rslave
+    #     - /etc/passwd:/host/etc/passwd:ro
+    #     - /etc/group:/host/etc/group:ro
+    #     - /etc/localtime:/etc/localtime:ro
+    #     - /proc:/host/proc:ro
+    #     - /sys:/host/sys:ro
+    #     - /etc/os-release:/host/etc/os-release:ro
+    #     - /var/log:/host/var/log:ro
+    #     - /var/run/docker.sock:/var/run/docker.sock:ro
+    #     - /run/dbus:/run/dbus:ro
