@@ -19,10 +19,13 @@ directories:
   - /srv/media/downloads/incomplete
   - /srv/media/downloads/complete
   - /srv/transcode
-  # - /srv/appdata/grafana
-  # - /srv/appdata/postgres
-  # - /srv/appdata/timescaledb
-  # - /srv/appdata/nodered
+
+remove_directories:
+  - /srv/appdata/grafana
+  - /srv/appdata/postgres
+  - /srv/appdata/timescaledb
+  - /srv/appdata/nodered
+  # - /srv/appdata/netdata
 
 # grafana_uid: "472"
 # grafana_gid: "472"
