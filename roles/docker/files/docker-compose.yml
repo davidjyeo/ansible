@@ -144,6 +144,9 @@ services:
       TZ: Europe/London
       PUID: 1000
       PGID: 1000
+      NETDATA_CLAIM_TOKEN: d3vyZWVlxV0GNuPUVQEy03GpLp-o9ypg5ubbRqkvz9jhLNy2-bCNGNdJNY5ZSISsqRKT5cdGPY-9qqk1uCCfWXecjsPig3tQJyGWNlFZuHV4T6cR5BBEOnWG-O-B4R3hw-jDKEE
+      NETDATA_CLAIM_URL: https://app.netdata.cloud
+      NETDATA_CLAIM_ROOMS: fc018425-7562-4733-92c0-b260cf5e3f77
 
     security_opt:
       - no-new-privileges:true
