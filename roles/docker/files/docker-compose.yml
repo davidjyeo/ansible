@@ -175,6 +175,9 @@ services:
       PGID: 1000
       TZ: Europe/London
 
+    devices:
+      - /dev/dri:/dev/dri
+
     volumes:
       - /srv/appdata/jellyfin/conf:/config
       - /srv/appdata/jellyfin/cache:/cache
