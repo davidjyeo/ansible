@@ -1,61 +1,5 @@
 services:
 
-  # byparr:
-  #   image: ghcr.io/thephaseless/byparr:latest
-  #   container_name: byparr
-  #   hostname: byparr
-  #   restart: unless-stopped
-
-  #   environment:
-  #     TZ: Europe/London
-  #     HOST: "0.0.0.0"
-  #     PORT: "8191"
-  #     BROWSER_LOCALE: "en-GB"
-
-  #   ports:
-  #     - "8191:8191"
-
-  #   volumes:
-  #     - /srv/appdata/byparr/screenshots:/app/screenshots
-
-  #   networks:
-  #     - media_net
-
-  #   # labels:
-  #   #   - wud.watch=true
-
-  flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
-    container_name: flaresolverr
-    restart: unless-stopped
-
-    environment:
-      LOG_LEVEL: info
-      LOG_HTML: "false"
-      CAPTCHA_SOLVER: none
-      TZ: Europe/London
-
-    volumes:
-      - /srv/appdata/flaresolverr:/config
-
-    dns:
-      - 172.18.0.53
-
-    networks:
-      - media_net
-
-    healthcheck:
-      test:
-        - CMD
-        - wget
-        - "--quiet"
-        - "--spider"
-        - "http://localhost:8191/health"
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
-
   adguardhome:
     image: adguard/adguardhome:latest
     container_name: adguardhome
@@ -221,31 +165,53 @@ services:
     networks:
       - media_net
 
-  plex:
-    image: lscr.io/linuxserver/plex:latest
-    container_name: plex
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
     network_mode: host
-
-    dns:
-      - 192.168.0.128
 
     environment:
       PUID: 1000
       PGID: 1000
       TZ: Europe/London
-      VERSION: docker
-
-    devices:
-      - /dev/dri:/dev/dri
 
     volumes:
-      - /srv/appdata/plex/conf:/config
-      - /srv/media/movies:/movies
+      - /srv/appdata/jellyfin/conf:/config
+      - /srv/appdata/jellyfin/cache:/cache
       - /srv/media/tv:/tv
-      - /srv/media/music:/music
-      - /srv/transcode:/transcode:/transcode
+      - /srv/media/movies:/movies
+    #     - /srv/media/music:/music
+    #     - /srv/transcode:/transcode:/transcode
+    # ports:
+    #   - 8686:8686
 
-    restart: unless-stopped
+    dns:
+      - 192.168.0.128
+    # plex:
+    #   image: lscr.io/linuxserver/plex:latest
+    #   container_name: plex
+    #   network_mode: host
+
+    #   dns:
+    #     - 192.168.0.128
+
+    #   environment:
+    #     PUID: 1000
+    #     PGID: 1000
+    #     TZ: Europe/London
+    #     VERSION: docker
+
+    #   devices:
+    #     - /dev/dri:/dev/dri
+
+    #   volumes:
+    #     - /srv/appdata/plex/conf:/config
+    #     - /srv/media/movies:/movies
+    #     - /srv/media/tv:/tv
+    #     - /srv/media/music:/music
+    #     - /srv/transcode:/transcode:/transcode
+
+    #   restart: unless-stopped
 
 networks:
   media_net:
@@ -254,6 +220,38 @@ networks:
         - subnet: 172.18.0.0/24
     driver: bridge
     #////
+
+    # flaresolverr:
+    #   image: ghcr.io/flaresolverr/flaresolverr:latest
+    #   container_name: flaresolverr
+    #   restart: unless-stopped
+
+    #   environment:
+    #     LOG_LEVEL: info
+    #     LOG_HTML: "false"
+    #     CAPTCHA_SOLVER: none
+    #     TZ: Europe/London
+
+    #   volumes:
+    #     - /srv/appdata/flaresolverr:/config
+
+    #   dns:
+    #     - 172.18.0.53
+
+    #   networks:
+    #     - media_net
+
+    #   healthcheck:
+    #     test:
+    #       - CMD
+    #       - wget
+    #       - "--quiet"
+    #       - "--spider"
+    #       - "http://localhost:8191/health"
+    #     interval: 30s
+    #     timeout: 10s
+    #     retries: 3
+    #     start_period: 30s
 
     # terraformmcp:
     #   container_name: terraform-mcp-server

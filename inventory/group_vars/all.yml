@@ -10,8 +10,7 @@ directories:
   - /srv/appdata/radarr
   - /srv/appdata/lidarr
   - /srv/appdata/prowlarr
-  - /srv/appdata/byparr
-  - /srv/appdata/flaresolverr
+  - /srv/appdata/jellyfin
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies
@@ -23,6 +22,8 @@ directories:
   - /srv/transcode
 
 remove_directories:
+  - /srv/appdata/byparr
+  - /srv/appdata/flaresolverr
   - /srv/appdata/grafana
   - /srv/appdata/postgres
   - /srv/appdata/timescaledb
