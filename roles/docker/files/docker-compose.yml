@@ -183,8 +183,9 @@ services:
       - /srv/appdata/jellyfin/cache:/cache
       - /srv/media/tv:/tv
       - /srv/media/movies:/movies
-    #     - /srv/media/music:/music
-    #     - /srv/transcode:/transcode:/transcode
+      - /srv/media/music:/music
+      - /srv/transcode:/transcode:/transcode
+
     # ports:
     #   - 8686:8686
 
