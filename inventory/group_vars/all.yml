@@ -22,6 +22,7 @@ directories:
   - /srv/transcode
 
 remove_directories:
+  - /srv/appdata/jellyfin
   - /srv/appdata/byparr
   - /srv/appdata/flaresolverr
   - /srv/appdata/grafana
