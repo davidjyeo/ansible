@@ -165,57 +165,58 @@ services:
     networks:
       - media_net
 
-  jellyfin:
-    image: jellyfin/jellyfin
-    container_name: jellyfin
-    network_mode: host
-
-    environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: Europe/London
-
-    devices:
-      - /dev/dri:/dev/dri
-
-    volumes:
-      - /srv/appdata/jellyfin/conf:/config
-      - /srv/appdata/jellyfin/cache:/cache
-      - /srv/media/tv:/tv
-      - /srv/media/movies:/movies
-      - /srv/media/music:/music
-      - /srv/transcode:/transcode:/transcode
-
-    # ports:
-    #   - 8686:8686
-
-    dns:
-      - 192.168.0.128
-    # plex:
-    #   image: lscr.io/linuxserver/plex:latest
-    #   container_name: plex
+    # jellyfin:
+    #   image: jellyfin/jellyfin
+    #   container_name: jellyfin
     #   network_mode: host
-
-    #   dns:
-    #     - 192.168.0.128
 
     #   environment:
     #     PUID: 1000
     #     PGID: 1000
     #     TZ: Europe/London
-    #     VERSION: docker
 
     #   devices:
     #     - /dev/dri:/dev/dri
 
     #   volumes:
-    #     - /srv/appdata/plex/conf:/config
-    #     - /srv/media/movies:/movies
+    #     - /srv/appdata/jellyfin/conf:/config
+    #     - /srv/appdata/jellyfin/cache:/cache
     #     - /srv/media/tv:/tv
+    #     - /srv/media/movies:/movies
     #     - /srv/media/music:/music
     #     - /srv/transcode:/transcode:/transcode
 
-    #   restart: unless-stopped
+    #   # ports:
+    #   #   - 8686:8686
+
+    #   dns:
+    #     - 192.168.0.128
+
+    plex:
+      image: lscr.io/linuxserver/plex:latest
+      container_name: plex
+      network_mode: host
+
+      dns:
+        - 192.168.0.128
+
+      environment:
+        PUID: 1000
+        PGID: 1000
+        TZ: Europe/London
+        VERSION: docker
+
+      devices:
+        - /dev/dri:/dev/dri
+
+      volumes:
+        - /srv/appdata/plex/conf:/config
+        - /srv/media/movies:/movies
+        - /srv/media/tv:/tv
+        - /srv/media/music:/music
+        - /srv/transcode:/transcode:/transcode
+
+      restart: unless-stopped
 
 networks:
   media_net:
