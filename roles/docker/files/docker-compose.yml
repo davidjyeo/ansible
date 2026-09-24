@@ -246,7 +246,10 @@ services:
 
     volumes:
       - /srv/appdata:/home/node/.n8n
-      # - ./local-files:/files
+      # - ./local-files:/
+
+    networks:
+      - media_net
 
 networks:
   media_net:
