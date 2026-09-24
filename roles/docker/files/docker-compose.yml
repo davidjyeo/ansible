@@ -234,19 +234,19 @@ services:
     #   - traefik.http.routers.n8n.middlewares=n8n@docker
 
     environment:
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: true
-      - N8N_HOST: ${SUBDOMAIN}.${DOMAIN_NAME}
-      - N8N_PORT: 5678
-      - N8N_PROTOCOL: https
-      - NODE_ENV: production
-      - WEBHOOK_URL: https://${SUBDOMAIN}.${DOMAIN_NAME}/
-      - GENERIC_TIMEZONE: ${GENERIC_TIMEZONE}
+      # - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: true
+      # - N8N_HOST: ${SUBDOMAIN}.${DOMAIN_NAME}
+      # - N8N_PORT: 5678
+      # - N8N_PROTOCOL: https
+      # - NODE_ENV: production
+      # - WEBHOOK_URL: https://${SUBDOMAIN}.${DOMAIN_NAME}/
+      # - GENERIC_TIMEZONE: ${GENERIC_TIMEZONE}
       - TZ: Europe/London
-      - N8N_RESTRICT_FILE_ACCESS_TO: /files
+      # - N8N_RESTRICT_FILE_ACCESS_TO: /files
 
     volumes:
       - /srv/appdata:/home/node/.n8n
-      - ./local-files:/files
+      # - ./local-files:/files
 
 networks:
   media_net:
