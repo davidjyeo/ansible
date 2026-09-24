@@ -199,7 +199,6 @@ services:
 
     ports:
       - 9443:9443
-      # - 8000:8000 # Remove if you do not intend to use Edge Agents
 
     dns:
       - 172.18.0.53
