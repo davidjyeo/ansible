@@ -191,6 +191,24 @@ services:
 
     restart: unless-stopped
 
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+
+    dns:
+      - 172.18.0.53
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    networks:
+      - media_net
+
 networks:
   media_net:
     ipam:
