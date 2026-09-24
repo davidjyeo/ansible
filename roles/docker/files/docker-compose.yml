@@ -211,7 +211,7 @@ services:
       - media_net
 
   n8n:
-    image: n8nio/n8n
+    image: ghcr.io/n8n-io/n8n
     restart: unless-stopped
 
     ports:
