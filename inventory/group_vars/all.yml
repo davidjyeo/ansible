@@ -10,6 +10,7 @@ directories:
   - /srv/appdata/radarr
   - /srv/appdata/lidarr
   - /srv/appdata/prowlarr
+  - /srv/appdata/portainer
   - /srv/appdata/jellyfin
   - /srv/docker
   - /srv/docker/media-stack

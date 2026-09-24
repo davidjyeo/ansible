@@ -191,20 +191,18 @@ services:
 
     restart: unless-stopped
 
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
-
-    environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: Europe/London
-
-    dns:
-      - 172.18.0.53
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:lts
+    restart: unless-stopped
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /srv/appdata/portainer/data:/data
+
+    ports:
+      - 9443:9443
+      # - 8000:8000 # Remove if you do not intend to use Edge Agents
 
     networks:
       - media_net
