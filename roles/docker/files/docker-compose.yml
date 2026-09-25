@@ -1,5 +1,21 @@
 services:
 
+  tor:
+    image: dockurr/tor
+    container_name: tor
+    ports:
+      - 9050:9050
+      - 8118:8118
+
+    restart: always
+
+    volumes:
+      - /srv/appdata/tor/config:/etc/tor
+      - /srv/appdata/tor/data:/var/lib/tor
+
+    networks:
+      - media_net
+
   adguardhome:
     image: adguard/adguardhome:latest
     container_name: adguardhome
