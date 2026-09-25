@@ -23,6 +23,7 @@ services:
 
     environment:
       AZURE_CLOUD_NAME: AzureCloud
+      ASPNETCORE_URLS: http://+:5000
 
     volumes:
       - /srv/appdata/azure-mcp:/home/app/.azure
