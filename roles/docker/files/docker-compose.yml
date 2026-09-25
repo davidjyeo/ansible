@@ -1,17 +1,54 @@
 services:
 
-  tor:
-    image: dockurr/tor
-    container_name: tor
+  # tor:
+  #   image: dockurr/tor
+  #   container_name: tor
+  #   ports:
+  #     - 9050:9050
+  #     - 8118:8118
+
+  #   restart: always
+
+  #   volumes:
+  #     - /srv/appdata/tor/config:/etc/tor
+  #     - /srv/appdata/tor/data:/var/lib/tor
+
+  #   networks:
+  #     - media_net
+
+  terraformmcp:
+    container_name: terraform-mcp-server
+    image: hashicorp/terraform-mcp-server
+    restart: unless-stopped
+
+    command:
+      - streamable-http
+      - --toolsets=registry #default
+      - --transport-host=0.0.0.0
+      - --transport-port=8080
+      - --mcp-endpoint=/mcp
+
+    environment:
+      TZ: Europe/London
+      LOG_LEVEL: info
+      LOG_FORMAT: text
+      MCP_CORS_MODE: permissive
+      ENABLE_TF_OPERATIONS: "false"
+      # MCP_ENDPOINT: /mcp
+      # TRANSPORT_HOST: 0.0.0.0
+      # TRANSPORT_PORT: "8080"
+
     ports:
-      - 9050:9050
-      - 8118:8118
+      - '8081:8080'
 
-    restart: always
+    dns:
+      - 172.18.0.53
 
-    volumes:
-      - /srv/appdata/tor/config:/etc/tor
-      - /srv/appdata/tor/data:/var/lib/tor
+    healthcheck:
+      test: [ "CMD", "/bin/terraform-mcp-server", "--help" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
     networks:
       - media_net
@@ -315,42 +352,7 @@ networks:
     #     retries: 3
     #     start_period: 30s
 
-    # terraformmcp:
-    #   container_name: terraform-mcp-server
-    #   image: hashicorp/terraform-mcp-server
-    #   restart: unless-stopped
 
-    #   command:
-    #     - streamable-http
-    #     - --toolsets=registry #default
-    #     - --transport-host=0.0.0.0
-    #     - --transport-port=8080
-    #     - --mcp-endpoint=/mcp
-
-    #   environment:
-    #     TZ: Europe/London
-    #     #      MCP_ENDPOINT: /mcp
-    #     LOG_LEVEL: info
-    #     LOG_FORMAT: text
-    #     MCP_CORS_MODE: permissive
-    #     ENABLE_TF_OPERATIONS: "false"
-    #   #      TRANSPORT_HOST: 0.0.0.0
-    #   #      TRANSPORT_PORT: "8080"
-
-    #   ports:
-    #     - '8081:8080'
-
-    #   dns:
-    #     - 172.18.0.53
-
-    #   healthcheck:
-    #     test: [ "CMD", "/bin/terraform-mcp-server", "--help" ]
-    #     interval: 30s
-    #     timeout: 10s
-    #     retries: 3
-
-    #   networks:
-    #     - media_net
     # grafana:
     #   image: grafana/grafana:latest
     #   container_name: grafana
