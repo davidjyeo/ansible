@@ -13,6 +13,8 @@ directories:
   - /srv/appdata/portainer
   - /srv/appdata/tor
   - /srv/appdata/jellyfin
+  - /srv/appdata/azure-mcp
+  - /srv/appdata/terraform-mcp
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies
