@@ -156,6 +156,7 @@
       - docker-compose.yml
     state: present
     pull: missing
+    remove_orphans: true
   # register: docker_compose_deployment
 
 - name: Verify Docker installation
