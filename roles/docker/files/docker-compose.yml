@@ -16,31 +16,31 @@ services:
   #   networks:
   #     - media_net
 
-  azuremcp:
-    container_name: azure-mcp-server
-    image: mcr.microsoft.com/azure-sdk/azure-mcp:latest
-    restart: unless-stopped
+  # azuremcp:
+  #   container_name: azure-mcp-server
+  #   image: mcr.microsoft.com/azure-sdk/azure-mcp:latest
+  #   restart: unless-stopped
 
-    environment:
-      AZURE_CLOUD_NAME: AzureCloud
-      ASPNETCORE_URLS: http://+:5000
+  #   environment:
+  #     AZURE_CLOUD_NAME: AzureCloud
+  #     ASPNETCORE_URLS: http://+:5000
 
-    volumes:
-      - /srv/appdata/azure-mcp:/home/app/.azure
+  #   volumes:
+  #     - /srv/appdata/azure-mcp:/home/app/.azure
 
-    command:
-      - "--transport"
-      - http
-      - "--dangerously-disable-http-incoming-auth"
+  #   command:
+  #     - "--transport"
+  #     - http
+  #     - "--dangerously-disable-http-incoming-auth"
 
-    ports:
-      - '5000:5000'
+  #   ports:
+  #     - '5000:5000'
 
-    dns:
-      - 172.18.0.53
+  #   dns:
+  #     - 172.18.0.53
 
-    networks:
-      - media_net
+  #   networks:
+  #     - media_net
 
   terraformmcp:
     container_name: terraform-mcp-server
