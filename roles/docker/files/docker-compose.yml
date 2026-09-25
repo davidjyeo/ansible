@@ -30,6 +30,12 @@ services:
     stdin_open: true
     tty: true
 
+    ports:
+      - '8082:8080'
+
+    dns:
+      - 172.18.0.53
+
     networks:
       - media_net
 
