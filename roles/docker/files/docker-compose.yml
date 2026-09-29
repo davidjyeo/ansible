@@ -79,6 +79,23 @@ services:
     networks:
       - media_net
 
+  locallstack:
+    container_name: "localstack"
+    image: localstack/localstack-azure
+    restart: unless-stopped
+
+    ports:
+      - '4566:4566'
+
+    volumes:
+      - /srv/appdata/localstack/conf:/var/lib/localstack
+
+    dns:
+      - 172.18.0.53
+
+    networks:
+      - media_net
+
   adguardhome:
     image: adguard/adguardhome:latest
     container_name: adguardhome
