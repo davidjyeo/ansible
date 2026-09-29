@@ -87,6 +87,9 @@ services:
     ports:
       - '4566:4566'
 
+    environment:
+      - LOCALSTACK_AUTH_TOKEN: "ls-WAbAlisA-LUFi-yicI-7739-Ciji214408d8"
+
     volumes:
       - /srv/appdata/localstack/conf:/var/lib/localstack
 
