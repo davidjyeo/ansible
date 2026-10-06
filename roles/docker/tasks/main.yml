@@ -159,31 +159,31 @@
     remove_orphans: true
   # register: docker_compose_deployment
 
-- name: Wait for Ollama API to become available
-  ansible.builtin.uri:
-    url: http://127.0.0.1:7869/api/tags
-    method: GET
-    status_code: 200
-  register: ollama_api
-  retries: 30
-  delay: 5
-  until: ollama_api.status == 200
+# - name: Wait for Ollama API to become available
+#   ansible.builtin.uri:
+#     url: http://127.0.0.1:7869/api/tags
+#     method: GET
+#     status_code: 200
+#   register: ollama_api
+#   retries: 30
+#   delay: 5
+#   until: ollama_api.status == 200
 
-- name: Check installed Ollama models
-  ansible.builtin.command:
-    cmd: docker exec ollama ollama list
-  register: ollama_models
-  changed_when: false
+# - name: Check installed Ollama models
+#   ansible.builtin.command:
+#     cmd: docker exec ollama ollama list
+#   register: ollama_models
+#   changed_when: false
 
-- name: Pull qwen3:8b model
-  ansible.builtin.command:
-    cmd: docker exec ollama ollama pull qwen3:8b
-  when: "'qwen3:8b' not in ollama_models.stdout"
+# - name: Pull qwen3:8b model
+#   ansible.builtin.command:
+#     cmd: docker exec ollama ollama pull qwen3:8b
+#   when: "'qwen3:8b' not in ollama_models.stdout"
 
-- name: Pull qwen3:4b model
-  ansible.builtin.command:
-    cmd: docker exec ollama ollama pull qwen3:4b
-  when: "'qwen3:4b' not in ollama_models.stdout"
+# - name: Pull qwen3:4b model
+#   ansible.builtin.command:
+#     cmd: docker exec ollama ollama pull qwen3:4b
+#   when: "'qwen3:4b' not in ollama_models.stdout"
 
 - name: Verify Docker installation
   ansible.builtin.command:
