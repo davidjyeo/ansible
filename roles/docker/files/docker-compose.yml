@@ -16,8 +16,10 @@ services:
     restart: unless-stopped
 
     environment:
-      OLLAMA_KEEP_ALIVE: "24h"
+      OLLAMA_KEEP_ALIVE: "5m"
       OLLAMA_HOST: "0.0.0.0"
+
+    # mem_limit: 5g
 
     networks:
       media_net:

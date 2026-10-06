@@ -180,6 +180,11 @@
     cmd: docker exec ollama ollama pull qwen3:8b
   when: "'qwen3:8b' not in ollama_models.stdout"
 
+- name: Pull qwen3:4b model
+  ansible.builtin.command:
+    cmd: docker exec ollama ollama pull qwen3:4b
+  when: "'qwen3:4b' not in ollama_models.stdout"
+
 - name: Verify Docker installation
   ansible.builtin.command:
     cmd: docker --version
