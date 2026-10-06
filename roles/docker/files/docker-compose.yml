@@ -38,6 +38,9 @@ services:
     ports:
       - "8080:8085"
 
+    dns:
+      - 172.18.0.53
+
     environment:
       OLLAMA_BASE_URLS: "http://ollama:11434"
       ENV: dev
