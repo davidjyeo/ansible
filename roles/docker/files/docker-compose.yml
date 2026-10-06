@@ -36,11 +36,11 @@ services:
     ports:
       - "8085:8080"
 
-    dns:
-      - 172.18.0.53
+    # dns:
+    #   - 172.18.0.53
 
     environment:
-      OLLAMA_BASE_URLS: "http://192.168.0.128:7869"
+      OLLAMA_BASE_URLS: "http://ollama:11434"
       ENV: dev
       WEBUI_AUTH: False
       WEBUI_NAME: "valiantlynx AI"
