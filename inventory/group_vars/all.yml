@@ -14,6 +14,7 @@ directories:
   - /srv/appdata/tor
   - /srv/appdata/jellyfin
   - /srv/appdata/terraform-mcp
+  - /srv/appdata/ollama
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies
