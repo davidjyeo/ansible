@@ -171,31 +171,6 @@ services:
     networks:
       - media_net
 
-  lidarr:
-    image: lscr.io/linuxserver/lidarr:latest
-    container_name: lidarr
-
-    environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: Europe/London
-
-    volumes:
-      - /srv/appdata/lidarr/conf:/config
-      - /srv/media/music:/music
-      - /srv/media/downloads:/downloads
-
-    ports:
-      - 8686:8686
-
-    dns:
-      - 172.18.0.53
-
-    restart: unless-stopped
-
-    networks:
-      - media_net
-
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
@@ -248,7 +223,30 @@ networks:
     driver: bridge
     #////
 
+    # lidarr:
+    #   image: lscr.io/linuxserver/lidarr:latest
+    #   container_name: lidarr
 
+    #   environment:
+    #     PUID: 1000
+    #     PGID: 1000
+    #     TZ: Europe/London
+
+    #   volumes:
+    #     - /srv/appdata/lidarr/conf:/config
+    #     - /srv/media/music:/music
+    #     - /srv/media/downloads:/downloads
+
+    #   ports:
+    #     - 8686:8686
+
+    #   dns:
+    #     - 172.18.0.53
+
+    #   restart: unless-stopped
+
+    #   networks:
+    #     - media_net
     # locallstack:
     # container_name: "localstack"
     # image: localstack/localstack-azure

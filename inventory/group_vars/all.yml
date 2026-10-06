@@ -12,7 +12,6 @@ directories:
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
   - /srv/appdata/terraform-mcp
-  - /srv/appdata/ollama
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies
@@ -24,6 +23,7 @@ directories:
   - /srv/transcode
 
 remove_directories:
+  - /srv/appdata/ollama
   - /srv/appdata/tor
   - /srv/appdata/localstack
   - /srv/appdata/azure-mcp
