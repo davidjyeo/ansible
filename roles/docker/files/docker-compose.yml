@@ -19,16 +19,25 @@ services:
       OLLAMA_KEEP_ALIVE: "24h"
       OLLAMA_HOST: "0.0.0.0"
 
+    networks:
+      media_net:
+        ipv4_address: 172.18.0.60
+
+  ollama-pull:
+    image: docker.io/ollama/ollama:latest
+    depends_on:
+      - ollama
+    restart: "no"
+    volumes:
+      - /srv/appdata/ollama/conf:/root/.ollama
     entrypoint:
       - /bin/sh
       - -c
       - |
-        sleep 10
+        sleep 20
         ollama pull qwen3:8b
-
     networks:
-      media_net:
-        ipv4_address: 172.18.0.60
+      - media_net
 
   ollama-webui:
     image: ghcr.io/open-webui/open-webui:main
