@@ -22,8 +22,8 @@ services:
       OLLAMA_HOST: "0.0.0.0"
 
     networks:
-      - media_net:
-          ipv4_address: 172.18.0.60
+      media_net:
+        ipv4_address: 172.18.0.60
 
   ollama-webui:
     image: ghcr.io/open-webui/open-webui:main
