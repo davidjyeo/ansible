@@ -98,6 +98,30 @@ services:
     networks:
       - media_net
 
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+
+    ports:
+      - "4533:4533"
+
+    restart: unless-stopped
+
+    volumes:
+      - /srv/appdata/navidrome/data:/data
+      - /srv/media/music:/music
+
+    dns:
+      - 172.18.0.53
+
+    networks:
+      - media_net
+
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr

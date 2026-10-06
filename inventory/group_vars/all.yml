@@ -9,6 +9,7 @@ directories:
   - /srv/appdata/sonarr
   - /srv/appdata/radarr
   - /srv/appdata/lidarr
+  - /srv/appdata/navidrome
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
   - /srv/appdata/terraform-mcp
