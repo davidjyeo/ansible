@@ -2,15 +2,14 @@ services:
 
   ollama:
     image: docker.io/ollama/ollama:latest
+    container_name: ollama
 
     ports:
-      - 7869:11434
+      - "7869:11434"
 
     volumes:
       - /srv/appdata/ollama/conf:/root/.ollama
       - /srv/appdata/ollama/code:/code
-
-    container_name: ollama
 
     pull_policy: always
 
@@ -19,8 +18,35 @@ services:
     restart: unless-stopped
 
     environment:
-      OLLAMA_KEEP_ALIVE: 24h
-      OLLAMA_HOST: 0.0.0.0
+      OLLAMA_KEEP_ALIVE: "24h"
+      OLLAMA_HOST: "0.0.0.0"
+
+    networks:
+      - media_net:
+          ipv4_address: 172.18.0.60
+
+  ollama-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: ollama-webui
+
+    volumes:
+      - /srv/appdata/ollama/ollama-webui:/app/backend/data
+
+    depends_on:
+      - ollama
+
+    ports:
+      - "8080:8085"
+
+    environment:
+      OLLAMA_BASE_URLS: "http://ollama:11434"
+      ENV: dev
+      WEBUI_AUTH: False
+      WEBUI_NAME: "valiantlynx AI"
+      WEBUI_URL: "http://ollama:8085"
+      WEBUI_SECRET_KEY: "t0p-s3cr3t"
+
+    restart: unless-stopped
 
     networks:
       - media_net

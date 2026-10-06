@@ -11,8 +11,6 @@ directories:
   - /srv/appdata/lidarr
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
-  - /srv/appdata/tor
-  - /srv/appdata/jellyfin
   - /srv/appdata/terraform-mcp
   - /srv/appdata/ollama
   - /srv/docker
@@ -26,6 +24,7 @@ directories:
   - /srv/transcode
 
 remove_directories:
+  - /srv/appdata/tor
   - /srv/appdata/localstack
   - /srv/appdata/azure-mcp
   - /srv/appdata/n8n
