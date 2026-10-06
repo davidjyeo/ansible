@@ -11,7 +11,7 @@ services:
       - /srv/appdata/ollama/conf:/root/.ollama
       - /srv/appdata/ollama/code:/code
 
-    pull_policy: always
+    # pull_policy: always
 
     tty: true
 
