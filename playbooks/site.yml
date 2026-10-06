@@ -7,11 +7,6 @@
   serial: 10%
   max_fail_percentage: 40
 
-  # vars:
-  #   # Keep role names as variables to make the play easier to refactor later
-  #   common_role_name: common
-  #   docker_role_name: docker
-
   roles:
     - role: common
       tags:
@@ -20,30 +15,3 @@
     - role: docker
       tags:
         - docker
-
-    # - role: k3s
-    #   tags:
-    #     - k3s
-
-    # - role: metallb
-    #   tags:
-    #     - metallb
-
-    # - role: adguard
-    #   tags:
-    #     - adguard
-
-    # - role: plex
-    #   tags:
-    #     - plex
-
-    # - role: qbittorrent
-    #   tags:
-    #     - qbittorrent
-
-# - name: Configure K3s
-#   hosts: k3s
-#   become: true
-
-#   roles:
-#     - k3s

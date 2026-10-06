@@ -23,22 +23,6 @@ services:
       media_net:
         ipv4_address: 172.18.0.60
 
-  ollama-pull:
-    image: docker.io/ollama/ollama:latest
-    depends_on:
-      - ollama
-    restart: "no"
-    volumes:
-      - /srv/appdata/ollama/conf:/root/.ollama
-    entrypoint:
-      - /bin/sh
-      - -c
-      - |
-        sleep 20
-        ollama pull qwen3:8b
-    networks:
-      - media_net
-
   ollama-webui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: ollama-webui
