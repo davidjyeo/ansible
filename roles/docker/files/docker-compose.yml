@@ -53,6 +53,7 @@ services:
       WEBUI_NAME: "valiantlynx AI"
       WEBUI_URL: "http://192.168.0.128:8085"
       WEBUI_SECRET_KEY: "t0p-s3cr3t"
+      DEFAULT_MODELS: qwen3:8b
 
     restart: unless-stopped
 
