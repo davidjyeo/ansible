@@ -40,11 +40,11 @@ services:
       - 172.18.0.53
 
     environment:
-      OLLAMA_BASE_URLS: "http://ollama:11434"
+      OLLAMA_BASE_URLS: "http://192.168.0.128:11434"
       ENV: dev
       WEBUI_AUTH: False
       WEBUI_NAME: "valiantlynx AI"
-      WEBUI_URL: "http://ollama:8085"
+      WEBUI_URL: "http://192.168.0.128:8085"
       WEBUI_SECRET_KEY: "t0p-s3cr3t"
 
     restart: unless-stopped
