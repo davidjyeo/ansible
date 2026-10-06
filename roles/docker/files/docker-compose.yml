@@ -176,6 +176,8 @@ services:
     container_name: plex
     network_mode: host
 
+    pull_policy: always
+
     dns:
       - 192.168.0.128
 
