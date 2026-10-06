@@ -8,6 +8,7 @@ directories:
   - /srv/appdata/qbittorrent
   - /srv/appdata/sonarr
   - /srv/appdata/radarr
+  - /srv/appdata/lidarr
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
   - /srv/appdata/terraform-mcp
@@ -22,7 +23,6 @@ directories:
   - /srv/transcode
 
 remove_directories:
-  - /srv/appdata/lidarr
   - /srv/appdata/ollama
   - /srv/appdata/tor
   - /srv/appdata/localstack

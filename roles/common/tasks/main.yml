@@ -31,6 +31,7 @@
       - vainfo
       - intel-gpu-tools
       - nfs-common
+      - vsftpd
     state: present
 
 - name: Create directories
