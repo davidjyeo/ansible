@@ -25,6 +25,8 @@ services:
     dns:
       - 172.18.0.53
 
+    pull_policy: always
+
     healthcheck:
       test: [ "CMD", "/bin/terraform-mcp-server", "--help" ]
       interval: 30s
@@ -83,6 +85,8 @@ services:
     volumes:
       - /srv/appdata/prowlarr/conf:/config
 
+    pull_policy: always
+
     ports:
       - 9696:9696
 
@@ -108,6 +112,8 @@ services:
     volumes:
       - /srv/appdata/qbittorrent/conf:/config
       - /srv/media/downloads:/downloads
+
+    pull_policy: always
 
     ports:
       - 8080:8080
@@ -136,6 +142,8 @@ services:
       - /srv/media/tv:/tv
       - /srv/media/downloads:/downloads
 
+    pull_policy: always
+
     ports:
       - 8989:8989
 
@@ -159,6 +167,8 @@ services:
       - /srv/appdata/radarr/conf:/config
       - /srv/media/movies:/movies
       - /srv/media/downloads:/downloads
+
+    pull_policy: always
 
     ports:
       - 7878:7878
@@ -207,6 +217,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /srv/appdata/portainer/data:/data
+
+    pull_policy: always
 
     ports:
       - 9443:9443
