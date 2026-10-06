@@ -11,8 +11,6 @@ services:
       - /srv/appdata/ollama/conf:/root/.ollama
       - /srv/appdata/ollama/code:/code
 
-    # pull_policy: always
-
     tty: true
 
     restart: unless-stopped
@@ -36,7 +34,7 @@ services:
       - ollama
 
     ports:
-      - "8085:8088"
+      - "8085:8080"
 
     dns:
       - 172.18.0.53
