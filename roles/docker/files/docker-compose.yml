@@ -1,60 +1,5 @@
 services:
 
-  ollama:
-    image: docker.io/ollama/ollama:latest
-    container_name: ollama
-
-    ports:
-      - "7869:11434"
-
-    volumes:
-      - /srv/appdata/ollama/conf:/root/.ollama
-      - /srv/appdata/ollama/code:/code
-
-    tty: true
-
-    restart: unless-stopped
-
-    environment:
-      OLLAMA_KEEP_ALIVE: "5m"
-      OLLAMA_HOST: "0.0.0.0"
-
-    # mem_limit: 5g
-
-    networks:
-      media_net:
-        ipv4_address: 172.18.0.60
-
-  ollama-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    container_name: ollama-webui
-
-    volumes:
-      - /srv/appdata/ollama/ollama-webui:/app/backend/data
-
-    depends_on:
-      - ollama
-
-    ports:
-      - "8085:8080"
-
-    # dns:
-    #   - 172.18.0.53
-
-    environment:
-      OLLAMA_BASE_URLS: "http://ollama:11434"
-      ENV: dev
-      WEBUI_AUTH: False
-      WEBUI_NAME: "valiantlynx AI"
-      WEBUI_URL: "http://192.168.0.128:8085"
-      WEBUI_SECRET_KEY: "t0p-s3cr3t"
-      DEFAULT_MODELS: qwen3:8b
-
-    restart: unless-stopped
-
-    networks:
-      - media_net
-
   terraformmcp:
     container_name: terraform-mcp-server
     image: hashicorp/terraform-mcp-server
@@ -73,9 +18,6 @@ services:
       LOG_FORMAT: text
       MCP_CORS_MODE: permissive
       ENABLE_TF_OPERATIONS: "false"
-      # MCP_ENDPOINT: /mcp
-      # TRANSPORT_HOST: 0.0.0.0
-      # TRANSPORT_PORT: "8080"
 
     ports:
       - '8081:8080'
@@ -276,7 +218,7 @@ services:
       - /srv/media/movies:/movies
       - /srv/media/tv:/tv
       - /srv/media/music:/music
-      - /srv/transcode:/transcode:/transcode
+      - /srv/transcode:/transcode
 
     restart: unless-stopped
 
@@ -537,3 +479,59 @@ networks:
     #     - /var/log:/host/var/log:ro
     #     - /var/run/docker.sock:/var/run/docker.sock:ro
     #     - /run/dbus:/run/dbus:ro
+
+
+    # ollama:
+    #     image: docker.io/ollama/ollama:latest
+    #     container_name: ollama
+
+    #     ports:
+    #       - "7869:11434"
+
+    #     volumes:
+    #       - /srv/appdata/ollama/conf:/root/.ollama
+    #       - /srv/appdata/ollama/code:/code
+
+    #     tty: true
+
+    #     restart: unless-stopped
+
+    #     environment:
+    #       OLLAMA_KEEP_ALIVE: "5m"
+    #       OLLAMA_HOST: "0.0.0.0"
+
+    #     # mem_limit: 5g
+
+    #     networks:
+    #       media_net:
+    #         ipv4_address: 172.18.0.60
+
+    #   ollama-webui:
+    #     image: ghcr.io/open-webui/open-webui:main
+    #     container_name: ollama-webui
+
+    #     volumes:
+    #       - /srv/appdata/ollama/ollama-webui:/app/backend/data
+
+    #     depends_on:
+    #       - ollama
+
+    #     ports:
+    #       - "8085:8080"
+
+    #     # dns:
+    #     #   - 172.18.0.53
+
+    #     environment:
+    #       OLLAMA_BASE_URLS: "http://ollama:11434"
+    #       ENV: dev
+    #       WEBUI_AUTH: False
+    #       WEBUI_NAME: "valiantlynx AI"
+    #       WEBUI_URL: "http://192.168.0.128:8085"
+    #       WEBUI_SECRET_KEY: "t0p-s3cr3t"
+    #       DEFAULT_MODELS: qwen3:8b
+
+    #     restart: unless-stopped
+
+    #     networks:
+    #       - media_net
