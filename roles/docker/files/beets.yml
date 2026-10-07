@@ -26,14 +26,12 @@ paths:
 import:
   write: yes
   copy: no
-  move: no
-  incremental: no
-  # incremental: yes
-  quiet: no
-  # quiet: yes
-  quiet_fallback: skip
-  resume: no
-  # resume: yes
+  move: yes
+  incremental: yes
+  incremental_skip_later: yes
+  quiet: yes
+  quiet_fallback: asis
+  resume: yes
 
 match:
   preferred:
