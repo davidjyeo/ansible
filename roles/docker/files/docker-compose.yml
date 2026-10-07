@@ -106,12 +106,10 @@ services:
       PUID: 1000
       PGID: 1000
       TZ: Europe/London
-      # LIBRARY_FILE: /config/musiclibrary.db
 
     volumes:
       - /srv/appdata/beets/conf:/config
       - /srv/media/music:/music
-      # - /srv/media/downloads:/downloads
 
     ports:
       - 8337:8337

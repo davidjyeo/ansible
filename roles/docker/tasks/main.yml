@@ -161,7 +161,7 @@
 - name: Deploy Beets configuration
   ansible.builtin.copy:
     src: beets.yml
-    dest: /srv/appdata/beets/config.yaml
+    dest: /srv/appdata/beets/conf/config.yaml
     owner: linuxadmin
     group: linuxadmin
     mode: '0644'
