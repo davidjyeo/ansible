@@ -17,46 +17,6 @@ original_date: no
 
 per_disc_numbering: no
 
-# convert:
-#     auto: no
-#     ffmpeg: /usr/bin/ffmpeg
-#     opts: -ab 320k -ac 2 -ar 48000
-#     max_bitrate: 320
-#     threads: 1
-#     dest:
-#     pretend: no
-#     link: no
-#     hardlink: no
-#     format: mp3
-#     id3v23: inherit
-#     write_metadata: yes
-#     formats:
-#         aac:
-#             command: ffmpeg -i $source -y -vn -acodec aac -aq 1 $dest
-#             extension: m4a
-#         alac:
-#             command: ffmpeg -i $source -y -vn -acodec alac $dest
-#             extension: m4a
-#         flac: ffmpeg -i $source -y -vn -acodec flac $dest
-#         mp3: ffmpeg -i $source -y -vn -aq 2 $dest
-#         opus: ffmpeg -i $source -y -vn -acodec libopus -ab 96k $dest
-#         ogg: ffmpeg -i $source -y -vn -acodec libvorbis -aq 3 $dest
-#         wma: ffmpeg -i $source -y -vn -acodec wmav2 -vn $dest
-#     auto_keep: no
-#     tmpdir:
-#     quiet: no
-#     embed: yes
-#     paths: {}
-#     no_convert: ''
-#     never_convert_lossy_files: no
-#     copy_album_art: no
-#     album_art_maxwidth: 0
-#     delete_originals: no
-#     playlist:
-#     force: no
-#     refresh: no
-#     keep_new: no
-
 paths:
   default: $albumartist/$album ($year)/$track - $title
   singleton: Singles/$artist - $title
@@ -138,20 +98,6 @@ fetchart:
   fanarttv_key: REDACTED
   google_key: REDACTED
   google_engine: REDACTED
-
-# replaygain:
-#   auto: no
-#   command: mp3gain
-#   overwrite: no
-#   backend: command
-#   threads: 4
-#   parallel_on_import: no
-#   per_disc: no
-#   peak: 'true'
-#   targetlevel: 89
-#   r128: [Opus]
-#   r128_targetlevel: 84
-#   noclip: yes
 
 scrub:
   auto: yes
