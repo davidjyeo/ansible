@@ -5,7 +5,7 @@ plugins: duplicates missing fetchart embedart lastgenre chroma web scrub
 directory: /music
 # --------------- Main ---------------
 
-library: /config/musiclibrary.db
+library: /config/musiclibrary.blb
 art_filename: albumart
 
 # --------------- Performance ---------------
@@ -27,10 +27,13 @@ import:
   write: yes
   copy: no
   move: no
-  incremental: yes
-  quiet: yes
+  incremental: no
+  # incremental: yes
+  quiet: no
+  # quiet: yes
   quiet_fallback: skip
-  resume: yes
+  resume: no
+  # resume: yes
 
 match:
   preferred:
