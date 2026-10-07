@@ -1,0 +1,185 @@
+# --------------- Plugins ---------------
+
+# plugins: replaygain duplicates missing fetchart embedart lastgenre chroma web scrub
+plugins: duplicates missing fetchart embedart lastgenre chroma web scrub
+directory: /music
+# --------------- Main ---------------
+
+library: /config/musiclibrary.db
+art_filename: albumart
+
+# --------------- Performance ---------------
+
+threaded: yes
+original_date: no
+
+# --------------- Tagging ---------------
+
+per_disc_numbering: no
+
+# convert:
+#     auto: no
+#     ffmpeg: /usr/bin/ffmpeg
+#     opts: -ab 320k -ac 2 -ar 48000
+#     max_bitrate: 320
+#     threads: 1
+#     dest:
+#     pretend: no
+#     link: no
+#     hardlink: no
+#     format: mp3
+#     id3v23: inherit
+#     write_metadata: yes
+#     formats:
+#         aac:
+#             command: ffmpeg -i $source -y -vn -acodec aac -aq 1 $dest
+#             extension: m4a
+#         alac:
+#             command: ffmpeg -i $source -y -vn -acodec alac $dest
+#             extension: m4a
+#         flac: ffmpeg -i $source -y -vn -acodec flac $dest
+#         mp3: ffmpeg -i $source -y -vn -aq 2 $dest
+#         opus: ffmpeg -i $source -y -vn -acodec libopus -ab 96k $dest
+#         ogg: ffmpeg -i $source -y -vn -acodec libvorbis -aq 3 $dest
+#         wma: ffmpeg -i $source -y -vn -acodec wmav2 -vn $dest
+#     auto_keep: no
+#     tmpdir:
+#     quiet: no
+#     embed: yes
+#     paths: {}
+#     no_convert: ''
+#     never_convert_lossy_files: no
+#     copy_album_art: no
+#     album_art_maxwidth: 0
+#     delete_originals: no
+#     playlist:
+#     force: no
+#     refresh: no
+#     keep_new: no
+
+paths:
+  default: $albumartist/$album ($year)/$track - $title
+  singleton: Singles/$artist - $title
+  comp: Compilations/$album ($year)/$track - $title
+  albumtype_soundtrack: Soundtracks/$album ($year)/$track - $title
+
+import:
+  write: yes
+  copy: no
+  move: no
+  incremental: yes
+  quiet: yes
+  quiet_fallback: skip
+  resume: yes
+
+match:
+  preferred:
+    countries: [GB, US]
+    media: [CD, Digital Media]
+
+lastgenre:
+  auto: yes
+  source: album
+  whitelist: yes
+  min_weight: 10
+  count: 3
+  fallback:
+  canonical: yes
+  cleanup_existing: no
+  force: no
+  keep_existing: no
+  prefer_specific: yes
+  title_case: yes
+  pretend: no
+  ignorelist: {}
+  aliases: yes
+
+duplicates:
+  count: yes
+  checksum: yes
+
+embedart:
+  auto: yes
+  maxwidth: 0
+  compare_threshold: 0
+  ifempty: no
+  remove_art_file: no
+  quality: 0
+  clearart_on_import: no
+
+fetchart:
+  auto: yes
+  fetch_for_asis: no
+  minwidth: 0
+  maxwidth: 0
+  quality: 0
+  max_filesize: 0
+  enforce_ratio: no
+  cautious: no
+  cover_names:
+  - cover
+  - front
+  - art
+  - album
+  - folder
+  fallback:
+  sources:
+  - filesystem
+  - coverart
+  - itunes
+  - amazon
+  - albumart
+  - cover_art_url
+  store_source: no
+  high_resolution: yes
+  deinterlace: no
+  cover_format:
+  lastfm_key: REDACTED
+  fanarttv_key: REDACTED
+  google_key: REDACTED
+  google_engine: REDACTED
+
+# replaygain:
+#   auto: no
+#   command: mp3gain
+#   overwrite: no
+#   backend: command
+#   threads: 4
+#   parallel_on_import: no
+#   per_disc: no
+#   peak: 'true'
+#   targetlevel: 89
+#   r128: [Opus]
+#   r128_targetlevel: 84
+#   noclip: yes
+
+scrub:
+  auto: yes
+
+replace:
+  ^\.: _
+  '[\x00-\x1f]': _
+  '[<>:"\?\*\|]': _
+  '[\xE8-\xEB]': e
+  '[\xEC-\xEF]': i
+  '[\xE2-\xE6]': a
+  '[\xF2-\xF6]': o
+  '[\xF8]': o
+  \.$: _
+  \s+$: ''
+
+web:
+  host: 0.0.0.0
+  port: 8337
+  cors: ''
+  cors_supports_credentials: no
+  reverse_proxy: no
+  include_paths: no
+  readonly: yes
+
+disabled_plugins: []
+
+chroma:
+  search_limit: 5
+  data_source_mismatch_penalty: 0.5
+  auto: yes

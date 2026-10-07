@@ -32,6 +32,7 @@
       - intel-gpu-tools
       - nfs-common
       - vsftpd
+      - samba
     state: present
 
 - name: Create directories

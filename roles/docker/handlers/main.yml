@@ -16,3 +16,8 @@
       - docker-compose.yml
     state: present
     pull: missing
+
+- name: Restart beets
+  community.docker.docker_container:
+    name: beets
+    restart: true

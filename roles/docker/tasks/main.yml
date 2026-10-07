@@ -157,7 +157,15 @@
     state: present
     pull: missing
     remove_orphans: true
-  # register: docker_compose_deployment
+
+- name: Deploy Beets configuration
+  ansible.builtin.copy:
+    src: beets.yml
+    dest: /srv/docker/beets/config.yaml
+    owner: linuxadmin
+    group: linuxadmin
+    mode: '0644'
+    notify: Restart beets
 
 # - name: Wait for Ollama API to become available
 #   ansible.builtin.uri:
