@@ -165,7 +165,7 @@
     owner: linuxadmin
     group: linuxadmin
     mode: '0644'
-    notify: Restart beets
+  notify: Restart beets
 
 # - name: Wait for Ollama API to become available
 #   ansible.builtin.uri:
