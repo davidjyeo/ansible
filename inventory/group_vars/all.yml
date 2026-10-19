@@ -13,6 +13,7 @@ directories:
   - /srv/appdata/beets
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
+  - /srv/appdata/postfix
   - /srv/appdata/terraform-mcp
   - /srv/docker
   - /srv/docker/media-stack

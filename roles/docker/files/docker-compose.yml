@@ -1,5 +1,30 @@
 services:
 
+  postfix:
+    container_name: postfix
+    image: tozd/postfix:ubuntu-noble
+    restart: unless-stopped
+    hostname: mail.example.com
+
+    ports:
+      - "25:25"
+      - "465:465"
+      - "587:587"
+
+    environment:
+      mailname: smtp.internal.example.com
+      MY_NETWORKS: "127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
+      ROOT_ALIAS: "admin@example.com"
+      LOG_TO_STDOUT: "1"
+      TZ: Europe/London
+      # MAIL_DOMAIN: example.com
+      # SMTP_SERVER: smtp.example.com
+      # SMTP_PORT: 587
+      # SMTP_USERNAME:
+
+    volumes:
+      - /srv/appdata/postfix/spool:/var/spool/postfix
+
   terraformmcp:
     container_name: terraform-mcp-server
     image: hashicorp/terraform-mcp-server
