@@ -1,67 +1,67 @@
 services:
 
-  postfix:
-    container_name: postfix
-    image: tozd/postfix:ubuntu-noble
-    restart: unless-stopped
-    hostname: mail.example.com
+  # postfix:
+  #   container_name: postfix
+  #   image: tozd/postfix:ubuntu-noble
+  #   restart: unless-stopped
+  #   hostname: mail.example.com
 
-    ports:
-      - "25:25"
-      - "465:465"
-      - "587:587"
+  #   ports:
+  #     - "25:25"
+  #     - "465:465"
+  #     - "587:587"
 
-    environment:
-      mailname: smtp.internal.example.com
-      MY_NETWORKS: "127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
-      ROOT_ALIAS: "admin@example.com"
-      LOG_TO_STDOUT: "1"
-      TZ: Europe/London
-      # MAIL_DOMAIN: example.com
-      # SMTP_SERVER: smtp.example.com
-      # SMTP_PORT: 587
-      # SMTP_USERNAME:
+  #   environment:
+  #     mailname: smtp.internal.example.com
+  #     MY_NETWORKS: "127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
+  #     ROOT_ALIAS: "admin@example.com"
+  #     LOG_TO_STDOUT: "1"
+  #     TZ: Europe/London
+  #     # MAIL_DOMAIN: example.com
+  #     # SMTP_SERVER: smtp.example.com
+  #     # SMTP_PORT: 587
+  #     # SMTP_USERNAME:
 
-    volumes:
-      - /srv/appdata/postfix/spool:/var/spool/postfix
+  #   volumes:
+  #     - /srv/appdata/postfix/spool:/var/spool/postfix
 
-    networks:
-      - media_net
+  #   networks:
+  #     - media_net
 
-  db:
-    image: mysql:8.0
-    restart: always
+  # db:
+  #   image: mysql:8.0
+  #   restart: always
 
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: 1
-      MYSQL_DATABASE: postfixadmin
-      MYSQL_USER: postfixadmin
-      MYSQL_PASSWORD: example
+  #   environment:
+  #     MYSQL_RANDOM_ROOT_PASSWORD: 1
+  #     MYSQL_DATABASE: postfixadmin
+  #     MYSQL_USER: postfixadmin
+  #     MYSQL_PASSWORD: example
 
-    networks:
-      - media_net
+  #   networks:
+  #     - media_net
 
-  postfixadmin:
+  # postfixadmin:
 
-    depends_on:
-      - db
+  #   depends_on:
+  #     - db
 
-    image: postfixadmin
+  #   image: postfixadmin
 
-    ports:
-      - 8000:80
+  #   ports:
+  #     - 8000:80
 
-    restart: always
+  #   restart: always
 
-    environment:
-      POSTFIXADMIN_DB_TYPE: mysqli
-      POSTFIXADMIN_DB_HOST: db
-      POSTFIXADMIN_DB_USER: postfixadmin
-      POSTFIXADMIN_DB_NAME: postfixadmin
-      POSTFIXADMIN_DB_PASSWORD: example
+  #   environment:
+  #     POSTFIXADMIN_DB_TYPE: mysqli
+  #     POSTFIXADMIN_DB_HOST: db
+  #     POSTFIXADMIN_DB_USER: postfixadmin
+  #     POSTFIXADMIN_DB_NAME: postfixadmin
+  #     POSTFIXADMIN_DB_PASSWORD: example
 
-    networks:
-      - media_net
+  #   networks:
+  #     - media_net
 
   terraformmcp:
     container_name: terraform-mcp-server
