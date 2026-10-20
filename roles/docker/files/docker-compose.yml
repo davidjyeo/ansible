@@ -64,7 +64,7 @@ services:
   #     - media_net
 
   terraform-enterprise:
-    image: images.releases.hashicorp.com/hashicorp/terraform-enterprise:latest
+    image: images.releases.hashicorp.com/hashicorp/terraform-enterprise:2.0.8
 
     ports:
       - "443:8443"
