@@ -63,6 +63,27 @@ services:
   #   networks:
   #     - media_net
 
+  terraform-enterprise:
+    image: images.releases.hashicorp.com/hashicorp/terraform-enterprise:latest
+
+    ports:
+      - "443:8443"
+
+    dns:
+      - 172.18.0.53
+
+    pull_policy: always
+
+    volumes:
+      - /srv/appdata/terraform/enterprise/config:/etc/terraform-enterprise
+      - /srv/appdata/terraform/enterprise/certs:/etc/ssl/private
+      - /srv/appdata/terraform/enterprise/license:/license
+
+    restart: unless-stopped
+
+    networks:
+      - media_net
+
   terraformmcp:
     container_name: terraform-mcp-server
     image: hashicorp/terraform-mcp-server

@@ -14,7 +14,9 @@ directories:
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
   - /srv/appdata/postfix
+  - /srv/appdata/terraform
   - /srv/appdata/terraform-mcp
+  # - /srv/appdata/terraform-enterprise
   - /srv/docker
   - /srv/docker/media-stack
   - /srv/media/movies
