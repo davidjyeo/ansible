@@ -81,8 +81,8 @@ services:
       - 5055:5055
 
     environment:
-      #PUID: 1000
-      #PGID: 1000
+      PUID: 1000
+      PGID: 1000
       TZ: Europe/London
       LOG_LEVEL: debug
 
