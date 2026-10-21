@@ -1,89 +1,5 @@
 services:
 
-  # postfix:
-  #   container_name: postfix
-  #   image: tozd/postfix:ubuntu-noble
-  #   restart: unless-stopped
-  #   hostname: mail.example.com
-
-  #   ports:
-  #     - "25:25"
-  #     - "465:465"
-  #     - "587:587"
-
-  #   environment:
-  #     mailname: smtp.internal.example.com
-  #     MY_NETWORKS: "127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
-  #     ROOT_ALIAS: "admin@example.com"
-  #     LOG_TO_STDOUT: "1"
-  #     TZ: Europe/London
-  #     # MAIL_DOMAIN: example.com
-  #     # SMTP_SERVER: smtp.example.com
-  #     # SMTP_PORT: 587
-  #     # SMTP_USERNAME:
-
-  #   volumes:
-  #     - /srv/appdata/postfix/spool:/var/spool/postfix
-
-  #   networks:
-  #     - media_net
-
-  # db:
-  #   image: mysql:8.0
-  #   restart: always
-
-  #   environment:
-  #     MYSQL_RANDOM_ROOT_PASSWORD: 1
-  #     MYSQL_DATABASE: postfixadmin
-  #     MYSQL_USER: postfixadmin
-  #     MYSQL_PASSWORD: example
-
-  #   networks:
-  #     - media_net
-
-  # postfixadmin:
-
-  #   depends_on:
-  #     - db
-
-  #   image: postfixadmin
-
-  #   ports:
-  #     - 8000:80
-
-  #   restart: always
-
-  #   environment:
-  #     POSTFIXADMIN_DB_TYPE: mysqli
-  #     POSTFIXADMIN_DB_HOST: db
-  #     POSTFIXADMIN_DB_USER: postfixadmin
-  #     POSTFIXADMIN_DB_NAME: postfixadmin
-  #     POSTFIXADMIN_DB_PASSWORD: example
-
-  #   networks:
-  #     - media_net
-
-  terraform-enterprise:
-    image: images.releases.hashicorp.com/hashicorp/terraform-enterprise:2.0.8
-
-    ports:
-      - "443:8443"
-
-    dns:
-      - 172.18.0.53
-
-    pull_policy: always
-
-    volumes:
-      - /srv/appdata/terraform/enterprise/config:/etc/terraform-enterprise
-      - /srv/appdata/terraform/enterprise/certs:/etc/ssl/private
-      - /srv/appdata/terraform/enterprise/license:/license
-
-    restart: unless-stopped
-
-    networks:
-      - media_net
-
   terraformmcp:
     container_name: terraform-mcp-server
     image: hashicorp/terraform-mcp-server
@@ -157,78 +73,30 @@ services:
       media_net:
         ipv4_address: 172.18.0.53
 
-  # lidarr:
-  #   image: lscr.io/linuxserver/lidarr:latest
-  #   container_name: lidarr
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
 
-  #   environment:
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: Europe/London
+    ports:
+      - 5055:5055
 
-  #   volumes:
-  #     - /srv/appdata/lidarr/conf:/config
-  #     - /srv/media/music:/music
-  #     - /srv/media/downloads:/downloads
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
 
-  #   ports:
-  #     - 8686:8686
+    volumes:
+      - /srv/appdata/seerr/conf:/app/config
 
-  #   dns:
-  #     - 172.18.0.53
+    pull_policy: always
 
-  #   restart: unless-stopped
+    dns:
+      - 172.18.0.53
 
-  #   networks:
-  #     - media_net
+    restart: unless-stopped
 
-  # beets:
-  #   image: lscr.io/linuxserver/beets:latest
-  #   container_name: beets
-
-  #   environment:
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: Europe/London
-
-  #   volumes:
-  #     - /srv/appdata/beets/conf:/config
-  #     - /srv/media/music:/music
-
-  #   ports:
-  #     - 8337:8337
-
-  #   restart: unless-stopped
-
-  #   dns:
-  #     - 172.18.0.53
-
-  #   networks:
-  #     - media_net
-
-  # navidrome:
-  #   image: deluan/navidrome:latest
-  #   container_name: navidrome
-
-  #   environment:
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: Europe/London
-
-  #   ports:
-  #     - "4533:4533"
-
-  #   restart: unless-stopped
-
-  #   volumes:
-  #     - /srv/appdata/navidrome/data:/data
-  #     - /srv/media/music:/music
-
-  #   dns:
-  #     - 172.18.0.53
-
-  #   networks:
-  #     - media_net
+    networks:
+      - media_net
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
@@ -681,3 +549,77 @@ networks:
 
     #     networks:
     #       - media_net
+
+
+    # lidarr:
+    #   image: lscr.io/linuxserver/lidarr:latest
+    #   container_name: lidarr
+
+    #   environment:
+    #     PUID: 1000
+    #     PGID: 1000
+    #     TZ: Europe/London
+
+    #   volumes:
+    #     - /srv/appdata/lidarr/conf:/config
+    #     - /srv/media/music:/music
+    #     - /srv/media/downloads:/downloads
+
+    #   ports:
+    #     - 8686:8686
+
+    #   dns:
+    #     - 172.18.0.53
+
+    #   restart: unless-stopped
+
+    #   networks:
+    #     - media_net
+
+    # beets:
+    #   image: lscr.io/linuxserver/beets:latest
+    #   container_name: beets
+
+    #   environment:
+    #     PUID: 1000
+    #     PGID: 1000
+    #     TZ: Europe/London
+
+    #   volumes:
+    #     - /srv/appdata/beets/conf:/config
+    #     - /srv/media/music:/music
+
+    #   ports:
+    #     - 8337:8337
+
+    #   restart: unless-stopped
+
+    #   dns:
+    #     - 172.18.0.53
+
+    #   networks:
+    #     - media_net
+
+    # navidrome:
+    #   image: deluan/navidrome:latest
+    #   container_name: navidrome
+
+    #   environment:
+    #     PUID: 1000
+    #     PGID: 1000
+    #     TZ: Europe/London
+
+    #   ports:
+    #     - "4533:4533"
+
+    #   restart: unless-stopped
+
+    #   volumes:
+    #     - /srv/appdata/navidrome/data:/data
+    #     - /srv/media/music:/music
+
+    #   dns:
+    #     - 172.18.0.53
+
+    #   networks:
+    #     - media_net
