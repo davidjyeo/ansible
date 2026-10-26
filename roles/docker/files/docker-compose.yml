@@ -1,5 +1,53 @@
 services:
 
+  adguardhome:
+    image: adguard/adguardhome:latest
+    container_name: adguardhome
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80/tcp"
+      - "3000:3000/tcp"
+    volumes:
+      - /srv/appdata/adguard/conf:/opt/adguardhome/conf
+      - /srv/appdata/adguard/work:/opt/adguardhome/work
+    environment:
+      TZ: Europe/London
+      PUID: 1000
+      PGID: 1000
+    security_opt:
+      - no-new-privileges:true
+    cap_add:
+      - NET_ADMIN
+    networks:
+      media_net:
+        ipv4_address: 172.18.0.53
+    # healthcheck:
+    #   test: [ "CMD", "wget", "-qO-", "http://127.0.0.1:3000/" ]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 60s
+
+    vault:
+      image: hashicorp/vault:latest
+      container_name: vault_container
+
+      ports:
+        - '8200:8200'
+
+      environment:
+        VAULT_DEV_ROOT_TOKEN_ID: myroot
+
+      volumes:
+        - /srv/appdata/hasicorp/vault/data:/vault/data
+
+      restart: unless-stopped
+
+      networks:
+        - media_net
+
   terraformmcp:
     container_name: terraform-mcp-server
     image: hashicorp/terraform-mcp-server
@@ -35,43 +83,6 @@ services:
 
     networks:
       - media_net
-
-  adguardhome:
-    image: adguard/adguardhome:latest
-    container_name: adguardhome
-    restart: unless-stopped
-
-    volumes:
-      - /srv/appdata/adguard/work:/opt/adguardhome/work
-      - /srv/appdata/adguard/conf:/opt/adguardhome/conf
-
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "80:80/tcp"
-      - "3000:3000/tcp"
-
-    environment:
-      TZ: Europe/London
-      PUID: 1000
-      PGID: 1000
-
-    security_opt:
-      - no-new-privileges:true
-
-    cap_add:
-      - NET_ADMIN
-
-    healthcheck:
-      test: [ "CMD", "wget", "-qO-", "http://127.0.0.1:3000/" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-    networks:
-      media_net:
-        ipv4_address: 172.18.0.53
 
   seerr:
     image: ghcr.io/seerr-team/seerr:latest
@@ -140,32 +151,42 @@ services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
-
     environment:
       PUID: 1000
       PGID: 1000
       TZ: Europe/London
       WEBUI_PORT: 8080
       TORRENTING_PORT: 45321
-
     volumes:
       - /srv/appdata/qbittorrent/conf:/config
       - /srv/media/downloads:/downloads
-
     pull_policy: always
-
     ports:
       - 8080:8080
       - 6881:6881
       - 6881:6881/udp
-
     dns:
       - 172.18.0.53
-
     restart: unless-stopped
-
     networks:
       - media_net
+
+  # qbitmanage:
+  #   image: ghcr.io/hotio/qbitmanage:latest
+  #   container_name: ${CONTAINER_PREFIX}qbitmanage
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #     - UMASK=${UMASK}
+  #   volumes:
+  #     - /srv/appdata/qbitmanage:/config
+  #     - /srv/appdata/qbitmanage/torrents:/data/torrents
+  #     # - ${CONFIG_PATH}/qbitmanage:/config
+  #     # - ${DATA_PATH}/torrents:/data/torrents
+  #   restart: unless-stopped
+  #   networks:
+  #     - media_net
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:develop #latest

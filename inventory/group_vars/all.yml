@@ -11,6 +11,7 @@ directories:
   - /srv/appdata/lidarr
   - /srv/appdata/navidrome
   - /srv/appdata/beets
+  - /srv/appdata/hasicorp
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
   - /srv/appdata/postfix
