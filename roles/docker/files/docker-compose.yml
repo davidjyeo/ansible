@@ -30,23 +30,23 @@ services:
     #   retries: 3
     #   start_period: 60s
 
-    vault:
-      image: hashicorp/vault:latest
-      container_name: vault_container
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault
 
-      ports:
-        - '8200:8200'
+    ports:
+      - '8200:8200'
 
-      environment:
-        VAULT_DEV_ROOT_TOKEN_ID: myroot
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: myroot
 
-      volumes:
-        - /srv/appdata/hasicorp/vault/data:/vault/data
+    volumes:
+      - /srv/appdata/hasicorp/vault/data:/vault/data
 
-      restart: unless-stopped
+    restart: unless-stopped
 
-      networks:
-        - media_net
+    networks:
+      - media_net
 
   terraformmcp:
     container_name: terraform-mcp-server
