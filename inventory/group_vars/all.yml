@@ -12,6 +12,7 @@ directories:
   - /srv/appdata/navidrome
   - /srv/appdata/beets
   - /srv/appdata/hasicorp
+  - /srv/appdata/homepage
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
   - /srv/appdata/postfix

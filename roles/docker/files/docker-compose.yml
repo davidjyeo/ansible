@@ -1,5 +1,52 @@
 services:
 
+  homepage:
+    immage: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    environment:
+      # HOMEPAGE_ALLOWED_HOSTS: gethomepage.dev # required, may need port. See gethomepage.dev/installation/#homepage_allowed_hosts
+      PUID: 1000 # optional, your user id
+      PGID: 1000 # optional, your group id
+    ports:
+      - 3000:3000
+    volumes:
+      - /srv/appdata/homepage/config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
+  #   uptime-kuma-0e80:
+  #     image: louislam/uptime-kuma:1
+  #     ports:
+  #       - 3001:3001
+  #     volumes:
+  #       - uptime-kuma-data:/app/data
+  #     networks:
+  #       - default
+  #   vaultwarden-8024:
+  #     image: vaultwarden/server:alpine
+  #     ports:
+  #       - 80:80
+  #     volumes:
+  #       - vaultwarden-data:/data
+  #     environment:
+  #       SIGNUPS_ALLOWED: "true"
+  #     networks:
+  #       - default
+  # networks:
+  #   default:
+  #     driver: bridge
+  # volumes:
+  #   homepage-config:
+  #     driver: local
+  #   uptime-kuma-data:
+  #     driver: local
+  #   vaultwarden-data:
+  #     driver: local
+
+
+
+
+
   adguardhome:
     image: adguard/adguardhome:latest
     container_name: adguardhome
@@ -23,25 +70,6 @@ services:
     networks:
       media_net:
         ipv4_address: 172.18.0.53
-    # healthcheck:
-    #   test: [ "CMD", "wget", "-qO-", "http://127.0.0.1:3000/" ]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 60s
-
-    # vault:
-    #   image: hashicorp/vault:latest
-    #   container_name: vault
-    #   ports:
-    #     - '8200:8200'
-    #   environment:
-    #     VAULT_DEV_ROOT_TOKEN_ID: myroot
-    #   volumes:
-    #     - /srv/appdata/hasicorp/vault/data:/vault/data
-    #   restart: unless-stopped
-    #   networks:
-    #     - media_net
 
   terraformmcp:
     container_name: terraform-mcp-server
