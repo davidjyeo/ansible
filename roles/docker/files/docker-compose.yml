@@ -1,56 +1,5 @@
 services:
 
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
-    environment:
-      # HOMEPAGE_ALLOWED_HOSTS: gethomepage.dev # required, may need port. See gethomepage.dev/installation/#homepage_allowed_hosts
-      PUID: 1000 # optional, your user id
-      PGID: 1000 # optional, your group id
-    dns:
-      - 172.18.0.53
-    ports:
-      - 3003:3000
-    volumes:
-      - /srv/appdata/homepage/config:/app/config
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    restart: unless-stopped
-    networks:
-      - media_net
-
-  #   uptime-kuma-0e80:
-  #     image: louislam/uptime-kuma:1
-  #     ports:
-  #       - 3001:3001
-  #     volumes:
-  #       - uptime-kuma-data:/app/data
-  #     networks:
-  #       - default
-  #   vaultwarden-8024:
-  #     image: vaultwarden/server:alpine
-  #     ports:
-  #       - 80:80
-  #     volumes:
-  #       - vaultwarden-data:/data
-  #     environment:
-  #       SIGNUPS_ALLOWED: "true"
-  #     networks:
-  #       - default
-  # networks:
-  #   default:
-  #     driver: bridge
-  # volumes:
-  #   homepage-config:
-  #     driver: local
-  #   uptime-kuma-data:
-  #     driver: local
-  #   vaultwarden-data:
-  #     driver: local
-
-
-
-
-
   adguardhome:
     image: adguard/adguardhome:latest
     container_name: adguardhome
@@ -180,6 +129,26 @@ services:
     networks:
       - media_net
 
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+    volumes:
+      - /srv/appdata/lidarr/conf:/config
+      - /srv/media/music:/music
+      - /srv/media/downloads:/downloads
+    pull_policy: always
+    ports:
+      - 8686:8686
+    dns:
+      - 172.18.0.53
+    restart: unless-stopped
+    networks:
+      - media_net
+
   sonarr:
     image: lscr.io/linuxserver/sonarr:develop #latest
     container_name: sonarr
@@ -269,14 +238,6 @@ networks:
       config:
         - subnet: 172.18.0.0/24
     driver: bridge
-    # volumes:
-    #   adguard-conf:
-    #     driver: local
-    #   adguard-work:
-    #     driver: local
-    #////
-
-
     # locallstack:
     # container_name: "localstack"
     # image: localstack/localstack-azure

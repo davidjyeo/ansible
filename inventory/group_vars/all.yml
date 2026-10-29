@@ -9,13 +9,8 @@ directories:
   - /srv/appdata/sonarr
   - /srv/appdata/radarr
   - /srv/appdata/lidarr
-  - /srv/appdata/navidrome
-  - /srv/appdata/beets
-  - /srv/appdata/hasicorp
-  - /srv/appdata/homepage
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
-  - /srv/appdata/postfix
   - /srv/appdata/seerr
   - /srv/docker
   - /srv/docker/media-stack
@@ -28,6 +23,11 @@ directories:
   - /srv/transcode
 
 remove_directories:
+  - /srv/appdata/postfix
+  - /srv/appdata/navidrome
+  - /srv/appdata/beets
+  - /srv/appdata/hasicorp
+  - /srv/appdata/homepage
   - /srv/appdata/terraform
   - /srv/appdata/ollama
   - /srv/appdata/tor
