@@ -17,7 +17,7 @@
     state: present
     pull: missing
 
-- name: Restart beets
-  community.docker.docker_container:
-    name: beets
-    restart: true
+# - name: Restart beets
+#   community.docker.docker_container:
+#     name: beets
+#     restart: true
