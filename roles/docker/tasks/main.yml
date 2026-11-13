@@ -158,14 +158,14 @@
     pull: missing
     remove_orphans: true
 
-- name: Deploy Beets configuration
-  ansible.builtin.copy:
-    src: beets.yml
-    dest: /srv/appdata/beets/conf/config.yaml
-    owner: linuxadmin
-    group: linuxadmin
-    mode: '0644'
-  notify: Restart beets
+# - name: Deploy Beets configuration
+#   ansible.builtin.copy:
+#     src: beets.yml
+#     dest: /srv/appdata/beets/conf/config.yaml
+#     owner: linuxadmin
+#     group: linuxadmin
+#     mode: '0644'
+#   notify: Restart beets
 
 # - name: Wait for Ollama API to become available
 #   ansible.builtin.uri:
