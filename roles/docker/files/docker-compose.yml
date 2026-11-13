@@ -285,8 +285,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /srv/appdata/portainer/data:/data
-    depends_on:
-      - adguardhome
+    # depends_on:
+    #   - adguardhome
     pull_policy: always
     ports:
       - 9443:9443
