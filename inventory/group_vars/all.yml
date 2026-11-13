@@ -8,6 +8,7 @@ directories:
   - /srv/appdata/qbittorrent
   - /srv/appdata/sonarr
   - /srv/appdata/radarr
+  - /srv/appdata/technitium
   - /srv/appdata/lidarr
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
