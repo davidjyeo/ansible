@@ -5,8 +5,10 @@ services:
     image: docker.io/technitium/dns-server:latest
     ports:
       - 5380:5380/tcp
-      - 53:53
-
+      - 53:53/tcp
+      - 53:53/udp
+      # - "53:53/tcp"
+      # - "53:53/udp"
     environment:
       - DNS_SERVER_DOMAIN=technitium
       - DNS_SERVER_FORWARDERS=dns.quad9.net:853,dns.quad9.net:853,dns.adguard-dns.com:853,dns.adguard-dns.com:853
