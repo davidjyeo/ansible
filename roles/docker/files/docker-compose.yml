@@ -1,4 +1,25 @@
 services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:develop #latest
+    container_name: sonarr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+    volumes:
+      - /srv/appdata/sonarr/conf:/config
+      - /srv/media/tv:/tv
+      - /srv/media/downloads:/downloads
+    depends_on:
+      - adguardhome
+    pull_policy: always
+    ports:
+      - 8989:8989
+    # dns:
+    #   - 172.18.0.53
+    restart: unless-stopped
+    networks:
+      - media_net
   # dns-server:
   #   container_name: dns-server
   #   hostname: dns-server
@@ -234,27 +255,7 @@ networks:
     #   networks:
     #     - media_net
 
-    sonarr:
-      image: lscr.io/linuxserver/sonarr:develop #latest
-      container_name: sonarr
-      environment:
-        PUID: 1000
-        PGID: 1000
-        TZ: Europe/London
-      volumes:
-        - /srv/appdata/sonarr/conf:/config
-        - /srv/media/tv:/tv
-        - /srv/media/downloads:/downloads
-      depends_on:
-        - adguardhome
-      pull_policy: always
-      ports:
-        - 8989:8989
-      # dns:
-      #   - 172.18.0.53
-      restart: unless-stopped
-      networks:
-        - media_net
+
     # radarr:
     #   image: lscr.io/linuxserver/radarr:latest
     #   container_name: radarr
