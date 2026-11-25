@@ -183,34 +183,34 @@ services:
     #     max-size: "10m"
     #     max-file: "3"
 
-    speedtest-tracker:
-      image: lscr.io/linuxserver/speedtest-tracker:latest
-      container_name: speedtest-tracker
-      environment:
-        TZ: Europe/London
-        PUID: 1000
-        PGID: 1000
-        APP_KEY: base64:hhq3LKYgqh1aAmV6fsp5H8iFNjKjW6GW+fZjF22azlA=
-        APP_URL: http://127.0.0.1
-        APP_LOCALE: Europe/London
-        DB_CONNECTION: sqlite
-        # DB_HOST: postgresql
-        # DB_PORT: 5432
-        # DB_USERNAME: linuxadmin
-        # DB_PASSWORD: 1QAZ2wsx3edc
-        # DB_CONNECTION: pgsql
-      volumes:
-        - /srv/appdata/speedtest-tracker/config:/config
-      ports:
-        - 8084:80
-      dns:
-        - 172.18.0.53
-      restart: unless-stopped
-      pull_policy: always
-      # dependencies:
-      #   - postgresql
-      networks:
-        - media_net
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    environment:
+      TZ: Europe/London
+      PUID: 1000
+      PGID: 1000
+      APP_KEY: base64:hhq3LKYgqh1aAmV6fsp5H8iFNjKjW6GW+fZjF22azlA=
+      APP_URL: http://127.0.0.1
+      APP_LOCALE: Europe/London
+      DB_CONNECTION: sqlite
+      # DB_HOST: postgresql
+      # DB_PORT: 5432
+      # DB_USERNAME: linuxadmin
+      # DB_PASSWORD: 1QAZ2wsx3edc
+      # DB_CONNECTION: pgsql
+    volumes:
+      - /srv/appdata/speedtest-tracker/config:/config
+    ports:
+      - 8084:80
+    dns:
+      - 172.18.0.53
+    restart: unless-stopped
+    pull_policy: always
+    dependencies:
+      - postgresql
+    networks:
+      - media_net
 
 networks:
   media_net:
