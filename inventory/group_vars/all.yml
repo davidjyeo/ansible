@@ -11,6 +11,7 @@ directories:
   - /srv/appdata/speedtest-tracker
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
+  - /srv/appdata/postgresql
   - /srv/appdata/prometheus
   - /srv/appdata/grafana
   - /srv/appdata/seerr

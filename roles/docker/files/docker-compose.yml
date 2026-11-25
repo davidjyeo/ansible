@@ -154,6 +154,35 @@ services:
     networks:
       - media_net
 
+  postgresql:
+    image: postgres
+    container_name: postgresql
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: linuxadmin
+      POSTGRES_PASSWORD: 1QAZ2wsx3edc
+      # POSTGRES_DB: postgres
+      
+    volumes:
+      - /srv/appdata/postgresql/database:/var/lib/postgresql
+    ports:
+      - 5432:5432
+    dns:
+      - 172.18.0.53
+    networks:
+      - media_net
+    # healthcheck:
+    #   test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "${ADMIN_USER}", "-d", "postgres"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+    #   start_period: 30s
+    # logging:
+    #   driver: local
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "3"
+
   speedtest-tracker:
     image: lscr.io/linuxserver/speedtest-tracker:latest
     container_name: speedtest-tracker
@@ -163,6 +192,8 @@ services:
       PGID: 1000
       APP_KEY: base64:hhq3LKYgqh1aAmV6fsp5H8iFNjKjW6GW+fZjF22azlA=
       APP_URL: https://speedtest.localhost.com
+      APP_LOCALE: Europe/London
+      ADMIN_NAME
       DB_CONNECTION: sqlite
     volumes:
       - /srv/appdata/speedtest-tracker/config:/config
