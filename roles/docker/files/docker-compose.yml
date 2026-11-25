@@ -143,8 +143,8 @@ services:
     pull_policy: always
     user: 1000:1000
     environment:
-      GF_SECURITY_ADMIN_USER: ${ADMIN_USER}
-      GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      GF_SECURITY_ADMIN_USER: linuxadmin
+      GF_SECURITY_ADMIN_PASSWORD: 1QAZ2wsx3edc
     volumes:
       - /srv/appdata/grafana/data:/var/lib/grafana
     ports:
