@@ -10,6 +10,8 @@ directories:
   - /srv/appdata/technitium
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
+  - /srv/appdata/prometheus
+  - /srv/appdata/grafana
   - /srv/appdata/seerr
   - /srv/docker
   - /srv/docker/media-stack

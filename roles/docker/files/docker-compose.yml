@@ -116,6 +116,49 @@ services:
       - /srv/transcode:/transcode
     restart: unless-stopped
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    pull_policy: always
+    user: 1000:1000
+    volumes:
+      - /srv/appdata/prometheus/data:/prometheus
+    ports:
+      - 9090:9090
+    dns:
+      - 172.18.0.53
+    networks:
+      - media_net
+    # logging:
+    #   driver: local
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "3"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    pull_policy: always
+    user: 1000:1000
+    environment:
+      GF_SECURITY_ADMIN_USER: ${ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    volumes:
+      - /srv/appdata/grafana/data:/var/lib/grafana
+    ports:
+      - 3000:3000
+    dns:
+      - 172.18.0.53
+    networks:
+      - media_net
+    # logging:
+    #   driver: local
+    #   options:
+    #     max-size: "10m"
+    #     max-file: "3"
+
 networks:
   media_net:
     ipam:
