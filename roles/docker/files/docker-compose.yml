@@ -153,11 +153,25 @@ services:
       - 172.18.0.53
     networks:
       - media_net
-    # logging:
-    #   driver: local
-    #   options:
-    #     max-size: "10m"
-    #     max-file: "3"
+
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    environment:
+      TZ: Europe/London
+      PUID: 1000
+      PGID: 1000
+      DB_CONNECTION: sqlite
+    volumes:
+      - /srv/appdata/speedtest-tracker/config:/config
+    ports:
+      - 8084:80
+    dns:
+      - 172.18.0.53
+    restart: unless-stopped
+    pull_policy: always
+    networks:
+      - media_net
 
 networks:
   media_net:

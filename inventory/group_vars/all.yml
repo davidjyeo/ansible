@@ -8,6 +8,7 @@ directories:
   - /srv/appdata/sonarr
   - /srv/appdata/radarr
   - /srv/appdata/technitium
+  - /srv/appdata/speedtest-tracker
   - /srv/appdata/prowlarr
   - /srv/appdata/portainer
   - /srv/appdata/prometheus
