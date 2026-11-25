@@ -7,8 +7,6 @@ services:
       - 5380:5380/tcp
       - 53:53/tcp
       - 53:53/udp
-      # - "53:53/tcp"
-      # - "53:53/udp"
     environment:
       - DNS_SERVER_DOMAIN=technitium
       - DNS_SERVER_FORWARDERS=dns.quad9.net:853,dns.adguard-dns.com:853
@@ -47,33 +45,66 @@ services:
     restart: unless-stopped
     networks:
       - media_net
+  # qbittorrent:
+  #   image: lscr.io/linuxserver/qbittorrent:latest
+  #   container_name: qbittorrent
+  #   environment:
+  #     PUID: 1000
+  #     PGID: 1000
+  #     TZ: Europe/London
+  #     WEBUI_PORT: 8080
+  #     TORRENTING_PORT: 45321
+  #   volumes:
+  #     - /srv/appdata/qbittorrent/conf:/config
+  #     - /srv/media/downloads:/downloads
+  #   depends_on:
+  #     - technitium
+  #   pull_policy: always
+  #   ports:
+  #     - 8080:8080
+  #     - 6881:6881
+  #     - 6881:6881/udp
+  #     - 45321:45321/tcp
+  #     - 45321:45321/udp
+  #   dns:
+  #     - 172.18.0.53
+  #   restart: unless-stopped
+  #   networks:
+  #     - media_net
 
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: qbittorrent
-    environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: Europe/London
-      WEBUI_PORT: 8080
-      TORRENTING_PORT: 45321
-    volumes:
-      - /srv/appdata/qbittorrent/conf:/config
-      - /srv/media/downloads:/downloads
-    depends_on:
-      - technitium
-    pull_policy: always
-    ports:
-      - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
-      - 45321:45321/tcp
-      - 45321:45321/udp
-    dns:
-      - 172.18.0.53
-    restart: unless-stopped
-    networks:
-      - media_net
+qbittorrent:
+  image: qbittorrentofficial/qbittorrent-nox:latest
+  container_name: qbittorrent
+
+  environment:
+    PUID: 1000
+    PGID: 1000
+    TZ: Europe/London
+    QBT_LEGAL_NOTICE: confirm
+    QBT_WEBUI_PORT: 8080
+    QBT_TORRENTING_PORT: 45321
+
+  volumes:
+    - /srv/appdata/qbittorrent/conf:/config
+    - /srv/media/downloads:/downloads
+
+  depends_on:
+    - technitium
+
+  pull_policy: always
+
+  ports:
+    - "8080:8080"
+    - "45321:45321/tcp"
+    - "45321:45321/udp"
+
+  dns:
+    - 172.18.0.53
+
+  restart: unless-stopped
+
+  networks:
+    - media_net
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:develop #latest
@@ -123,6 +154,7 @@ services:
     pull_policy: always
     user: 1000:1000
     volumes:
+      - /srv/appdata/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - /srv/appdata/prometheus/data:/prometheus
     ports:
       - 9090:9090
@@ -130,11 +162,6 @@ services:
       - 172.18.0.53
     networks:
       - media_net
-    # logging:
-    #   driver: local
-    #   options:
-    #     max-size: "10m"
-    #     max-file: "3"
 
   grafana:
     image: grafana/grafana:latest
@@ -171,17 +198,6 @@ services:
       - 172.18.0.53
     networks:
       - media_net
-    # healthcheck:
-    #   test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "${ADMIN_USER}", "-d", "postgres"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
-    #   start_period: 30s
-    # logging:
-    #   driver: local
-    #   options:
-    #     max-size: "10m"
-    #     max-file: "3"
 
   speedtest-tracker:
     image: lscr.io/linuxserver/speedtest-tracker:latest
@@ -191,7 +207,7 @@ services:
       PUID: 1000
       PGID: 1000
       APP_KEY: base64:hhq3LKYgqh1aAmV6fsp5H8iFNjKjW6GW+fZjF22azlA=
-      APP_URL: http://127.0.0.1
+      APP_URL: http://speedtest-tracker:8084
       APP_LOCALE: en
       DB_CONNECTION: sqlite
       # DB_HOST: postgresql
