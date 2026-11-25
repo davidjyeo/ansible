@@ -161,6 +161,8 @@ services:
       TZ: Europe/London
       PUID: 1000
       PGID: 1000
+      APP_KEY: base64:hhq3LKYgqh1aAmV6fsp5H8iFNjKjW6GW+fZjF22azlA=
+      APP_URL: https://speedtest.localhost.com
       DB_CONNECTION: sqlite
     volumes:
       - /srv/appdata/speedtest-tracker/config:/config
