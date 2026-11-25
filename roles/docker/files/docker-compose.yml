@@ -207,8 +207,8 @@ services:
         - 172.18.0.53
       restart: unless-stopped
       pull_policy: always
-      dependencies:
-        - postgresql
+      # dependencies:
+      #   - postgresql
       networks:
         - media_net
 
