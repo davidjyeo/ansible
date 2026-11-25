@@ -72,39 +72,39 @@ services:
   #   networks:
   #     - media_net
 
-qbittorrent:
-  image: qbittorrentofficial/qbittorrent-nox:latest
-  container_name: qbittorrent
+  qbittorrent:
+    image: qbittorrentofficial/qbittorrent-nox:latest
+    container_name: qbittorrent
 
-  environment:
-    PUID: 1000
-    PGID: 1000
-    TZ: Europe/London
-    QBT_LEGAL_NOTICE: confirm
-    QBT_WEBUI_PORT: 8080
-    QBT_TORRENTING_PORT: 45321
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+      QBT_LEGAL_NOTICE: confirm
+      QBT_WEBUI_PORT: 8080
+      QBT_TORRENTING_PORT: 45321
 
-  volumes:
-    - /srv/appdata/qbittorrent/conf:/config
-    - /srv/media/downloads:/downloads
+    volumes:
+      - /srv/appdata/qbittorrent/conf:/config
+      - /srv/media/downloads:/downloads
 
-  depends_on:
-    - technitium
+    depends_on:
+      - technitium
 
-  pull_policy: always
+    pull_policy: always
 
-  ports:
-    - "8080:8080"
-    - "45321:45321/tcp"
-    - "45321:45321/udp"
+    ports:
+      - "8080:8080"
+      - "45321:45321/tcp"
+      - "45321:45321/udp"
 
-  dns:
-    - 172.18.0.53
+    dns:
+      - 172.18.0.53
 
-  restart: unless-stopped
+    restart: unless-stopped
 
-  networks:
-    - media_net
+    networks:
+      - media_net
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:develop #latest
