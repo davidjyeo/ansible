@@ -16,7 +16,9 @@ directories:
   - /srv/media/movies
   - /srv/media/tv
   - /srv/media/music
-  - /srv/media/downloads
+  - /srv/media/downloads/tv
+  - /srv/media/downloads/music
+  - /srv/media/downloads/movies
   - /srv/media/downloads/incomplete
   - /srv/media/downloads/complete
   - /srv/transcode
