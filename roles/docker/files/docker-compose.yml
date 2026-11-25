@@ -191,9 +191,9 @@ services:
         PUID: 1000
         PGID: 1000
         APP_KEY: base64:hhq3LKYgqh1aAmV6fsp5H8iFNjKjW6GW+fZjF22azlA=
-        APP_URL: https://speedtest.localhost.com
+        APP_URL: http://127.0.0.1
         APP_LOCALE: Europe/London
-        DB_CONNECTION: sqllite
+        DB_CONNECTION: sqlite
         # DB_HOST: postgresql
         # DB_PORT: 5432
         # DB_USERNAME: linuxadmin
