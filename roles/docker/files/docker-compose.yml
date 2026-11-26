@@ -45,32 +45,6 @@ services:
     restart: unless-stopped
     networks:
       - media_net
-  # qbittorrent:
-  #   image: lscr.io/linuxserver/qbittorrent:latest
-  #   container_name: qbittorrent
-  #   environment:
-  #     PUID: 1000
-  #     PGID: 1000
-  #     TZ: Europe/London
-  #     WEBUI_PORT: 8080
-  #     TORRENTING_PORT: 45321
-  #   volumes:
-  #     - /srv/appdata/qbittorrent/conf:/config
-  #     - /srv/media/downloads:/downloads
-  #   depends_on:
-  #     - technitium
-  #   pull_policy: always
-  #   ports:
-  #     - 8080:8080
-  #     - 6881:6881
-  #     - 6881:6881/udp
-  #     - 45321:45321/tcp
-  #     - 45321:45321/udp
-  #   dns:
-  #     - 172.18.0.53
-  #   restart: unless-stopped
-  #   networks:
-  #     - media_net
 
   qbittorrent:
     image: qbittorrentofficial/qbittorrent-nox:latest
@@ -114,6 +88,49 @@ services:
     pull_policy: always
     ports:
       - 8989:8989
+    dns:
+      - 172.18.0.53
+    restart: unless-stopped
+    networks:
+      - media_net
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+    volumes:
+      - /srv/appdata/lidarr/conf:/config
+      - /srv/media/music:/music
+      - /srv/media/downloads:/downloads
+    depends_on:
+      - technitium
+    pull_policy: always
+    ports:
+      - 8686:8686
+    dns:
+      - 172.18.0.53
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+    volumes:
+      - /srv/appdata/radarr/conf:/config
+      - /srv/media/movies:/movies
+      - /srv/media/downloads:/downloads
+    depends_on:
+      - technitium
+    pull_policy: always
+    ports:
+      - 7878:7878
     dns:
       - 172.18.0.53
     restart: unless-stopped
@@ -329,48 +346,7 @@ networks:
 
 
 
-    # lidarr:
-    #   image: lscr.io/linuxserver/lidarr:latest
-    #   container_name: lidarr
-    #   environment:
-    #     PUID: 1000
-    #     PGID: 1000
-    #     TZ: Europe/London
-    #   volumes:
-    #     - /srv/appdata/lidarr/conf:/config
-    #     - /srv/media/music:/music
-    #     - /srv/media/downloads:/downloads
-    #   pull_policy: always
-    #   ports:
-    #     - 8686:8686
-    #   dns:
-    #     - 172.18.0.53
-    #   restart: unless-stopped
-    #   networks:
-    #     - media_net
 
-
-    # radarr:
-    #   image: lscr.io/linuxserver/radarr:latest
-    #   container_name: radarr
-    #   environment:
-    #     PUID: 1000
-    #     PGID: 1000
-    #     TZ: Europe/London
-    #   volumes:
-    #     - /srv/appdata/radarr/conf:/config
-    #     - /srv/media/movies:/movies
-    #     - /srv/media/downloads:/downloads
-    #   depends_on:
-    #     - adguardhome
-    #   pull_policy: always
-    #   ports:
-    #     - 7878:7878
-    #   dns:
-    #     - 172.18.0.53
-    #   restart: unless-stopped
-    #   networks:
-    #     - media_net
 
 
 
